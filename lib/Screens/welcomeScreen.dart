@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/components/navBar.dart';
 import 'package:tutguide/Screens/loginScreen.dart';
 
-import 'components/navBar copy.dart';
+import 'components/navBar.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
