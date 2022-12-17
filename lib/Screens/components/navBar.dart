@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../homeScreen.dart';
-import '../page2.dart';
+import '../searchScreen.dart';
 import '../page3.dart';
 import '../profileScreen.dart';
 
@@ -25,7 +25,7 @@ class _NavBarWidget2State extends State<NavBarWidget2> {
 
   final List<Widget> screens = [
     HomeScreen(),
-    Search(),
+    SearchScreen(),
     Settings(),
     Profile(),
   ];
