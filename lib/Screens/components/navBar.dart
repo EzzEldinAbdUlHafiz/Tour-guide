@@ -7,14 +7,14 @@ import '../searchScreen.dart';
 import '../page3.dart';
 import '../profileScreen.dart';
 
-class NavBarWidget2 extends StatefulWidget {
-  const NavBarWidget2({super.key});
+class NavBarWidget extends StatefulWidget {
+  const NavBarWidget({super.key});
 
   @override
-  State<NavBarWidget2> createState() => _NavBarWidget2State();
+  State<NavBarWidget> createState() => _NavBarWidgetState();
 }
 
-class _NavBarWidget2State extends State<NavBarWidget2> {
+class _NavBarWidgetState extends State<NavBarWidget> {
   int screenIndex = 0;
 
   void selectScreen(int index) {

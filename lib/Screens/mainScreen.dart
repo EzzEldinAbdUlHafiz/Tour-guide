@@ -8,22 +8,7 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: const MainScreenWidget(),
-      bottomNavigationBar: NavBarWidget2(),
+      bottomNavigationBar: NavBarWidget(),
     );
-  }
-}
-
-class MainScreenWidget extends StatefulWidget {
-  const MainScreenWidget({super.key});
-
-  @override
-  State<MainScreenWidget> createState() => _MainScreenWidgetState();
-}
-
-class _MainScreenWidgetState extends State<MainScreenWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

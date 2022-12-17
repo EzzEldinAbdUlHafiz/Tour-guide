@@ -5,8 +5,8 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Profile', style: TextStyle(fontSize: 50)),
+    return Scaffold(
+      body: const ProfileWidget(),
     );
   }
 }
@@ -21,6 +21,8 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Column(
+      children: [],
+    );
   }
 }

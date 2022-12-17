@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
 import 'package:tutguide/Screens/searchScreen.dart';
 import 'Screens/loginScreen.dart';
+import 'Screens/profileScreen.dart';
 
 void main() {
   runApp(const MyApp());
