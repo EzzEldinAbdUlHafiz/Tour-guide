@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'components/navBar.dart';
 
 class MainScreen extends StatelessWidget {

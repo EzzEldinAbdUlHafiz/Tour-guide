@@ -1,7 +1,7 @@
 class MuseumModel {
   String? name;
-  String? imageUrl;
+  String? imgPath;
   String? city;
 
-  MuseumModel(this.name, this.city, this.imageUrl);
+  MuseumModel(this.name, this.city, this.imgPath);
 }

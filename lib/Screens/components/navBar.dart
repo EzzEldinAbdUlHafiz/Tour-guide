@@ -1,10 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-
 import '../homeScreen.dart';
 import '../searchScreen.dart';
-import '../page3.dart';
+import '../eventScreen.dart';
 import '../profileScreen.dart';
 
 class NavBarWidget extends StatefulWidget {
@@ -26,7 +26,7 @@ class _NavBarWidgetState extends State<NavBarWidget> {
   final List<Widget> screens = [
     HomeScreen(),
     SearchScreen(),
-    Settings(),
+    EventScreen(),
     Profile(),
   ];
 
@@ -35,10 +35,10 @@ class _NavBarWidgetState extends State<NavBarWidget> {
     return Scaffold(
       body: screens[screenIndex],
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         animationDuration: Duration(milliseconds: 300),
-        color: Colors.deepPurple,
-        height: 60,
+        color: Colors.amber,
+        height: 50,
         index: screenIndex,
         onTap: selectScreen,
         items: [
@@ -51,7 +51,7 @@ class _NavBarWidgetState extends State<NavBarWidget> {
             color: Colors.white,
           ),
           Icon(
-            Icons.settings,
+            Icons.event,
             color: Colors.white,
           ),
           Icon(
