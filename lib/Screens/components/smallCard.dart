@@ -26,9 +26,12 @@ class SmallCard extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.transparent,
             ),
-            child: Image.asset(
-              img,
-              fit: BoxFit.cover,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.asset(
+                img,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           SizedBox(height: 10),

@@ -27,7 +27,7 @@ class _NavBarWidgetState extends State<NavBarWidget> {
     HomeScreen(),
     SearchScreen(),
     EventScreen(),
-    Profile(),
+    ProfileScreen(),
   ];
 
   @override

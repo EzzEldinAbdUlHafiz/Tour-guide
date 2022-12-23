@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tutguide/Screens/homeScreen.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
 import 'package:tutguide/Screens/searchScreen.dart';
 import 'Screens/loginScreen.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tut-Guide',
       theme: ThemeData(),
-      home: MainScreen(),
+      home: LoginScreen(),
     );
   }
 }
