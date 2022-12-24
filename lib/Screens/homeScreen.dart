@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
-import 'dart:html';
-// import 'package:tutguide/Screens/components/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/components/eventCard.dart';
 import 'package:tutguide/Screens/components/smallCard.dart';
