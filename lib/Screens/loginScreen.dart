@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
+import 'package:tutguide/Screens/homeScreen.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
 import 'registerScreen.dart';
 
@@ -86,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
+                          builder: (context) => const HomeScreen()),
                     );
                   },
                 ),

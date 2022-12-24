@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
+import 'dart:html';
+// import 'package:tutguide/Screens/components/events.dart';
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/components/eventCard.dart';
 import 'package:tutguide/Screens/components/smallCard.dart';
@@ -123,6 +125,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 25),
                 Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Museum list',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                Container(
                   height: 150,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -141,36 +154,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 25),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Event list',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Event list',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
                     ),
-                    Text(
-                      'See all',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
                 SizedBox(height: 10),
                 Container(
-                  height: 200,
+                  // height: 200,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        EventCard(img: 'assets/images/img1.jpg', txt: 'event1'),
-                        EventCard(img: 'assets/images/img2.jpg', txt: 'event2'),
-                        EventCard(img: 'assets/images/img1.jpg', txt: 'event1'),
-                        EventCard(img: 'assets/images/img2.jpg', txt: 'event2'),
+                        EventCard('assets/images/img1.jpg', txt: 'event1'),
+                        EventCard('assets/images/img2.jpg', txt: 'event2'),
+                        EventCard('assets/images/img1.jpg', txt: 'event1'),
+                        EventCard('assets/images/img2.jpg', txt: 'event2'),
                       ],
                     ),
                   ),

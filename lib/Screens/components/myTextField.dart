@@ -20,10 +20,11 @@ class MyTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 10, 20, 15),
-      child: TextField(
+      child: TextFormField(
         keyboardType: keyboardType,
         controller: controller,
         obscureText: obscureText,
+        // validator: ,
         decoration: InputDecoration(
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black),
@@ -31,7 +32,10 @@ class MyTextField extends StatelessWidget {
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.blueAccent),
           ),
-          fillColor: Colors.grey.shade300,
+          errorBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.red),
+          ),
+          fillColor: Colors.grey.shade200,
           filled: true,
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey),

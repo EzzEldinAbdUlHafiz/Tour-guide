@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import '../events.dart';
 import '../homeScreen.dart';
 import '../searchScreen.dart';
 import '../eventScreen.dart';
@@ -26,7 +27,7 @@ class _NavBarWidgetState extends State<NavBarWidget> {
   final List<Widget> screens = [
     HomeScreen(),
     SearchScreen(),
-    EventScreen(),
+    Events(),
     ProfileScreen(),
   ];
 
