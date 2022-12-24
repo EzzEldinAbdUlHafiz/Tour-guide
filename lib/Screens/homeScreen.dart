@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
+                // SizedBox(height: 25),
                 Container(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -164,7 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 10),
                 Container(
-                  // height: 200,
+                  height: 200,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
