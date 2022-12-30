@@ -4,7 +4,6 @@ import 'package:tutguide/Screens/eventScreen.dart';
 import 'package:tutguide/Screens/events.dart';
 import 'package:tutguide/Screens/homeScreen.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
-import 'package:tutguide/Screens/objectScreen.dart';
 import 'package:tutguide/Screens/searchScreen.dart';
 import 'Screens/loginScreen.dart';
 import 'Screens/profileScreen.dart';
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tut-Guide',
       theme: ThemeData(),
-      home: VideoPlayerWidget(),
+      home: LoginScreen(),
     );
   }
 }
