@@ -90,11 +90,16 @@ class ProfileScreen extends StatelessWidget {
               colorShade: Colors.orange.shade100,
               icon: Icons.help,
             ),
-            ProfileCards(
-              txt: 'Log out',
-              color: Colors.red,
-              colorShade: Colors.red.shade100,
-              icon: Icons.logout_rounded,
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: ProfileCards(
+                txt: 'Log out',
+                color: Colors.red,
+                colorShade: Colors.red.shade100,
+                icon: Icons.logout_rounded,
+              ),
             ),
           ],
         ),

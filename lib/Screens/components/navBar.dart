@@ -37,7 +37,7 @@ class _NavBarWidgetState extends State<NavBarWidget> {
       body: screens[screenIndex],
       bottomNavigationBar: CurvedNavigationBar(
         backgroundColor: Colors.transparent,
-        animationDuration: Duration(milliseconds: 300),
+        animationDuration: Duration(milliseconds: 500),
         color: Colors.amber,
         height: 50,
         index: screenIndex,
