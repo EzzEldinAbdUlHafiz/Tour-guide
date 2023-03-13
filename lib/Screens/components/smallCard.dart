@@ -2,6 +2,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 
+import '../MuseumsPage.dart';
+
 class SmallCard extends StatelessWidget {
   // const SmallCard({super.key});
   final String img;
@@ -16,6 +18,13 @@ class SmallCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(5.0),
+    child: InkWell(
+    onTap: () {
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => MuseumPage()),
+     );
+    },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,7 +49,9 @@ class SmallCard extends StatelessWidget {
             child: Text(txt),
           )
         ],
+
       ),
+    ),
     );
   }
 }
