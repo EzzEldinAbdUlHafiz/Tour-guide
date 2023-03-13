@@ -30,7 +30,7 @@ class _ProfileEditPageState extends State<ProfileEditPage> {
               children: [
                 CircleAvatar(
                   radius: 50,
-                  backgroundImage: AssetImage('assets/images/profile.png'),
+                  backgroundImage: AssetImage('assets/images/pharaoh.png'),
                 ),
                 SizedBox(height: 10),
                 TextFormField(
