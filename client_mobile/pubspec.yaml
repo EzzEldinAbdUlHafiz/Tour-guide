@@ -40,7 +40,6 @@ dependencies:
   video_player: ^2.4.10
   google_fonts: ^4.0.3
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
