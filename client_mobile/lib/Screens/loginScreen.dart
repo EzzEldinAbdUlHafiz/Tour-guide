@@ -114,63 +114,63 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 // signin with
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          'Sign in with',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 25),
+                //   child: Row(
+                //     children: [
+                //       Expanded(
+                //         child: Divider(
+                //           thickness: 0.5,
+                //           color: Colors.grey.shade400,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.symmetric(horizontal: 10),
+                //         child: Text(
+                //           'Sign in with',
+                //           style: TextStyle(color: Colors.grey.shade700),
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: Divider(
+                //           thickness: 0.5,
+                //           color: Colors.grey.shade400,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(height: 20),
 
-                // google facebook
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Image.asset(
-                        "assets/images/google.png",
-                        scale: 15,
-                      ),
-                    ),
-                    SizedBox(width: 25),
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Image.asset(
-                        "assets/images/facebook.png",
-                        scale: 15,
-                      ),
-                    ),
-                  ],
-                ),
+                // // google facebook
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Container(
+                //       padding: EdgeInsets.all(20),
+                //       decoration: BoxDecoration(
+                //         border: Border.all(color: Colors.grey),
+                //         borderRadius: BorderRadius.circular(15),
+                //       ),
+                //       child: Image.asset(
+                //         "assets/images/google.png",
+                //         scale: 15,
+                //       ),
+                //     ),
+                //     SizedBox(width: 25),
+                //     Container(
+                //       padding: EdgeInsets.all(20),
+                //       decoration: BoxDecoration(
+                //         border: Border.all(color: Colors.grey),
+                //         borderRadius: BorderRadius.circular(15),
+                //       ),
+                //       child: Image.asset(
+                //         "assets/images/facebook.png",
+                //         scale: 15,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),

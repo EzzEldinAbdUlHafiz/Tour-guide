@@ -1,17 +1,47 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
-import 'registerScreen.dart';
+import 'package:http/http.dart' as http;
+import '../models/User.dart';
+import 'dart:convert';
 
+// ignore: must_be_immutable
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
   final email = TextEditingController();
   final name = TextEditingController();
-  final phoneNumber = TextEditingController();
   final password = TextEditingController();
+  // final phoneNumber = TextEditingController();
+
+  late Future<User> futureUser;
+  bool flag = false;
+
+  Future<void> userRegister() async {
+    http.Response response = await http.post(
+      Uri.parse('http://192.168.1.7:3000/user/register'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'name': name.text,
+        'email': email.text,
+        'password': password.text,
+      }),
+    );
+    if (response.statusCode == 200) {
+      if (response.body.isEmpty) {
+        debugPrint('Response is empty');
+      } else {
+        debugPrint(response.body);
+        flag = true;
+      }
+    } else {
+      debugPrint('Error: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +52,10 @@ class RegisterScreen extends StatelessWidget {
             child: Column(
               children: [
                 // logo & name
-                SizedBox(height: 25),
+                SizedBox(height: 50),
                 Image.asset(
                   "assets/images/pharaoh.png",
-                  scale: 5,
+                  scale: 3,
                 ),
                 SizedBox(height: 20),
                 Text(
@@ -67,12 +97,12 @@ class RegisterScreen extends StatelessWidget {
                     hintText: 'Enter your password',
                     keyboardType: TextInputType.visiblePassword),
 
-                MyTextField(
-                  controller: phoneNumber,
-                  obscureText: false,
-                  hintText: 'Enter your phone number',
-                  keyboardType: TextInputType.phone,
-                ),
+                // MyTextField(
+                //   controller: phoneNumber,
+                //   obscureText: false,
+                //   hintText: 'Enter your phone number',
+                //   keyboardType: TextInputType.phone,
+                // ),
 
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -88,12 +118,16 @@ class RegisterScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
-                    );
+                  onPressed: () async {
+                    await userRegister();
+                    if (flag) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainScreen()),
+                      );
+                      flag = false;
+                    }
                   },
                 ),
                 SizedBox(height: 10),
@@ -105,63 +139,63 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
                 // signin with
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        child: Text(
-                          'Sign up with',
-                          style: TextStyle(color: Colors.grey.shade700),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
+                // Padding(
+                //   padding: EdgeInsets.symmetric(horizontal: 25),
+                //   child: Row(
+                //     children: [
+                //       Expanded(
+                //         child: Divider(
+                //           thickness: 0.5,
+                //           color: Colors.grey.shade400,
+                //         ),
+                //       ),
+                //       Padding(
+                //         padding: EdgeInsets.symmetric(horizontal: 10),
+                //         child: Text(
+                //           'Sign up with',
+                //           style: TextStyle(color: Colors.grey.shade700),
+                //         ),
+                //       ),
+                //       Expanded(
+                //         child: Divider(
+                //           thickness: 0.5,
+                //           color: Colors.grey.shade400,
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // SizedBox(height: 20),
 
-                // google facebook
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Image.asset(
-                        "assets/images/google.png",
-                        scale: 15,
-                      ),
-                    ),
-                    SizedBox(width: 25),
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Image.asset(
-                        "assets/images/facebook.png",
-                        scale: 15,
-                      ),
-                    ),
-                  ],
-                ),
+                // // google facebook
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     Container(
+                //       padding: EdgeInsets.all(20),
+                //       decoration: BoxDecoration(
+                //         border: Border.all(color: Colors.grey),
+                //         borderRadius: BorderRadius.circular(15),
+                //       ),
+                //       child: Image.asset(
+                //         "assets/images/google.png",
+                //         scale: 15,
+                //       ),
+                //     ),
+                //     SizedBox(width: 25),
+                //     Container(
+                //       padding: EdgeInsets.all(20),
+                //       decoration: BoxDecoration(
+                //         border: Border.all(color: Colors.grey),
+                //         borderRadius: BorderRadius.circular(15),
+                //       ),
+                //       child: Image.asset(
+                //         "assets/images/facebook.png",
+                //         scale: 15,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ],
             ),
           ),

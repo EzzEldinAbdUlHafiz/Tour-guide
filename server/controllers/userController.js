@@ -1,4 +1,5 @@
 const user = require("../models/user");
+const bcrypt = require("bcrypt");
 
 const findAll = (req, res) => {
   user
@@ -11,21 +12,27 @@ const findAll = (req, res) => {
     });
 };
 
-const findByEmail = (req, res) => {
+const login = (req, res) => {
+  const data = new user(req.body);
   user
     .findOne({
-      email: req.params.email,
+      email: data.email,
     })
-    .then((result) => {
-      res.send(result);
+    .then(async (result) => {
+      if (await bcrypt.compare(data.password, result.password)) {
+        res.send(result);
+      } else {
+        res.send("no user found");
+      }
     })
     .catch((err) => {
       console.log(err);
     });
 };
 
-const insertUser = (req, res) => {
+const register = async (req, res) => {
   const data = new user(req.body);
+  data.password = await bcrypt.hash(data.password, 10);
   data
     .save()
     .then((result) => {
@@ -36,4 +43,4 @@ const insertUser = (req, res) => {
     });
 };
 
-module.exports = { findAll, insertUser, findByEmail };
+module.exports = { findAll, register, login };

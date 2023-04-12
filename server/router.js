@@ -9,12 +9,12 @@ router.get("/user/getUsers", (req, res) => {
   user.findAll(req, res);
 });
 
-router.get("/user/:email", (req, res) => {
-  user.findByEmail(req, res);
+router.get("/user/login", (req, res) => {
+  user.login(req, res);
 });
 
-router.post("/user/insertUser", (req, res) => {
-  user.insertUser(req, res);
+router.post("/user/register", (req, res) => {
+  user.register(req, res);
 });
 
 router.get("/museum/getMuseums", (req, res) => {
