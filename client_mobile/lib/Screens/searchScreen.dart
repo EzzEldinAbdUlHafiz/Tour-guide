@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:tutguide/Screens/models/musiumModel.dart';
+import 'package:tutguide/models/Museum.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -10,70 +10,20 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  static List<MuseumModel> dummyMuseums = [
-    MuseumModel(
-      "aaa",
-      "alex",
-      "assets/images/img3.jpg",
+  static List<Museum> dummyMuseums = [
+    Museum(
+      name: "aaa",
+      city: "alex",
+      image: "assets/images/img3.jpg",
     ),
-    MuseumModel(
-      "b",
-      "cairo",
-      "assets/images/img4.jpg",
-    ),
-    MuseumModel(
-      "c",
-      "paris",
-      "assets/images/img5.jpg",
-    ),
-    MuseumModel(
-      "a",
-      "alex",
-      "assets/images/img3.jpg",
-    ),
-    MuseumModel(
-      "b",
-      "cairo",
-      "assets/images/img4.jpg",
-    ),
-    MuseumModel(
-      "c",
-      "paris",
-      "assets/images/img5.jpg",
-    ),
-    MuseumModel(
-      "a",
-      "alex",
-      "assets/images/img3.jpg",
-    ),
-    MuseumModel(
-      "b",
-      "cairo",
-      "assets/images/img4.jpg",
-    ),
-    MuseumModel(
-      "c",
-      "paris",
-      "assets/images/img5.jpg",
-    ),
-    MuseumModel(
-      "a",
-      "alex",
-      "assets/images/img3.jpg",
-    ),
-    MuseumModel(
-      "b",
-      "cairo",
-      "assets/images/img4.jpg",
-    ),
-    MuseumModel(
-      "c",
-      "paris",
-      "assets/images/img5.jpg",
+    Museum(
+      name: "b",
+      city: "cairo",
+      image: "assets/images/img4.jpg",
     ),
   ];
 
-  List<MuseumModel> displayMuseums = List.from(dummyMuseums);
+  List<Museum> displayMuseums = List.from(dummyMuseums);
 
   void updateList(String value) {
     setState(() {
@@ -149,7 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           ),
                         ),
                         leading: Image.asset(
-                          displayMuseums[index].imgPath!,
+                          displayMuseums[index].image!,
                           height: 60,
                           width: 60,
                         ),

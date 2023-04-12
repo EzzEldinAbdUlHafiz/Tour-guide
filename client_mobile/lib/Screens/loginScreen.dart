@@ -1,16 +1,46 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 // ignore_for_file: prefer_const_literals_to_create_immutables
-
+// NUF ==> no user found
 import 'package:flutter/material.dart';
+import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
 import 'package:tutguide/Screens/homeScreen.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
+import 'package:http/http.dart' as http;
+import '../models/User.dart';
+import 'dart:convert';
 import 'registerScreen.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
   final email = TextEditingController();
   final password = TextEditingController();
+  bool flag = false;
+
+  Future<void> userLogin() async {
+    final response = await http.post(
+      Uri.parse('${Globals().uri}/user/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': email.text,
+        'password': password.text,
+      }),
+    );
+    String responseBody = utf8.decode(response.bodyBytes);
+    debugPrint(responseBody);
+    if (response.statusCode == 200) {
+      if (responseBody == "NUF") {
+        debugPrint('Response is empty');
+      } else {
+        debugPrint('user found');
+        flag = true;
+      }
+    } else {
+      throw Exception("Failed to load Users");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,10 +92,10 @@ class LoginScreen extends StatelessWidget {
                 ),
 
                 // forget password
-                TextButton(
-                  onPressed: () {},
-                  child: Text('Forgot your password?'),
-                ),
+                // TextButton(
+                //   onPressed: () {},
+                //   child: Text('Forgot your password?'),
+                // ),
                 SizedBox(height: 10),
 
                 // signin button
@@ -83,12 +113,16 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainScreen()),
-                    );
+                  onPressed: () async {
+                    await userLogin();
+                    if (flag) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MainScreen()),
+                      );
+                      flag = false;
+                    }
                   },
                 ),
                 SizedBox(height: 10),

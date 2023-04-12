@@ -2,6 +2,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
 import 'package:tutguide/Screens/mainScreen.dart';
 import 'package:http/http.dart' as http;
@@ -21,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
 
   Future<void> userRegister() async {
     http.Response response = await http.post(
-      Uri.parse('http://192.168.1.7:3000/user/register'),
+      Uri.parse('${Globals().uri}/user/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

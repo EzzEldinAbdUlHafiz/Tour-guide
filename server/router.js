@@ -9,7 +9,7 @@ router.get("/user/getUsers", (req, res) => {
   user.findAll(req, res);
 });
 
-router.get("/user/login", (req, res) => {
+router.post("/user/login", (req, res) => {
   user.login(req, res);
 });
 
