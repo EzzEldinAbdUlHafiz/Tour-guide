@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Tut-Guide',
       theme: ThemeData(),
-      home: LoginScreen(),
+      home: MainScreen(),
     );
   }
 }

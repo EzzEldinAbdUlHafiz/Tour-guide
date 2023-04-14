@@ -18,7 +18,7 @@ router.post("/user/register", (req, res) => {
 });
 
 router.get("/museum/getMuseums", (req, res) => {
-  user.findAll(req, res);
+  museum.findAll(req, res);
 });
 
 router.get("/museum/:name", (req, res) => {

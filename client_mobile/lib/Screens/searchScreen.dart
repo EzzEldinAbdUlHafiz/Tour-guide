@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:tutguide/Globals.dart';
 import 'package:tutguide/models/Museum.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -10,28 +14,36 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  static List<Museum> dummyMuseums = [
-    Museum(
-      name: "aaa",
-      city: "alex",
-      image: "assets/images/img3.jpg",
-    ),
-    Museum(
-      name: "b",
-      city: "cairo",
-      image: "assets/images/img4.jpg",
-    ),
-  ];
+  static List<Museum> museumsList = [];
+  late List<Museum> displayMuseums = [];
 
-  List<Museum> displayMuseums = List.from(dummyMuseums);
+  Future<void> getMuseums() async {
+    final response =
+        await http.get(Uri.parse('${Globals().uri}/museum/getMuseums'));
+    if (response.statusCode == 200) {
+      museumsList = Museum.fromJsonList(jsonDecode(response.body));
+      // return Museum.fromJsonList(jsonDecode(response.body));
+      setState(() {
+        displayMuseums = List.from(museumsList);
+      });
+    } else {
+      throw Exception("Failed to load Museums");
+    }
+  }
 
   void updateList(String value) {
     setState(() {
-      displayMuseums = dummyMuseums
+      displayMuseums = museumsList
           .where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
+              element.name.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMuseums();
   }
 
   @override
@@ -72,34 +84,36 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
             SizedBox(height: 20),
             Expanded(
-              child: displayMuseums.length == 0
+              child: displayMuseums.isEmpty
                   ? Center(
-                      child: Text(
-                        "No results found",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: museumsList.isNotEmpty
+                          ? Text(
+                              "No results found",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )
+                          : CircularProgressIndicator(),
                     )
                   : ListView.builder(
                       itemCount: displayMuseums.length,
                       itemBuilder: (context, index) => ListTile(
                         contentPadding: EdgeInsets.all(10),
                         title: Text(
-                          displayMuseums[index].name!,
+                          displayMuseums[index].name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         subtitle: Text(
-                          displayMuseums[index].city!,
+                          displayMuseums[index].city,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
                         ),
                         leading: Image.asset(
-                          displayMuseums[index].image!,
+                          displayMuseums[index].image,
                           height: 60,
                           width: 60,
                         ),
