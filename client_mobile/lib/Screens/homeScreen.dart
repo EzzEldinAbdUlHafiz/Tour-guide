@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/eventCard.dart';
 import 'package:tutguide/Screens/components/smallCard.dart';
+import 'package:tutguide/models/Museum.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,6 +16,38 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  static List<Museum> museumsList = [];
+  late List<Museum> displayMuseums = [];
+
+  Future<void> getMuseums() async {
+    final response =
+        await http.get(Uri.parse('${Globals().uri}/museum/getMuseums'));
+    if (response.statusCode == 200) {
+      museumsList = Museum.fromJsonList(jsonDecode(response.body));
+      // return Museum.fromJsonList(jsonDecode(response.body));
+      setState(() {
+        displayMuseums = List.from(museumsList);
+      });
+    } else {
+      throw Exception("Failed to load Museums");
+    }
+  }
+
+  void updateList(String value) {
+    setState(() {
+      displayMuseums = museumsList
+          .where((element) =>
+              element.name.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getMuseums();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,16 +81,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ],
                     ),
-                    Container(
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Icon(
-                        Icons.person,
-                      ),
-                    ),
+                    // Container(
+                    //   padding: EdgeInsets.all(15),
+                    //   decoration: BoxDecoration(
+                    //     color: Colors.amber,
+                    //     borderRadius: BorderRadius.circular(15),
+                    //   ),
+                    //   child: Icon(
+                    //     Icons.person,
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 25),
@@ -66,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   child: Row(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 100,
                         width: 100,
                         child: Image.asset("assets/images/qr-code.gif"),
@@ -98,7 +134,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Colors.black,
                                 ),
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                
+                              },
                             ),
                           ],
                         ),
@@ -114,10 +152,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   child: TextField(
+                    onChanged: (value) => updateList(value),
                     decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.grey.shade300,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      hintText: "Search for museums",
                       prefixIcon: Icon(Icons.search),
-                      border: InputBorder.none,
-                      hintText: 'Search',
+                      prefixIconColor: Colors.black,
                     ),
                   ),
                 ),
@@ -133,20 +178,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 10),
-                Container(
+                SizedBox(
                   height: 150,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        SmallCard(
-                            img: 'assets/images/img3.jpg', txt: 'museum1'),
-                        SmallCard(
-                            img: 'assets/images/img4.jpg', txt: 'museum2'),
-                        SmallCard(
-                            img: 'assets/images/img5.jpg', txt: 'museum3'),
-                        SmallCard(
-                            img: 'assets/images/img3.jpg', txt: 'museum1'),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: displayMuseums.length,
+                          itemBuilder: (context, index) => SmallCard(
+                              img: displayMuseums[index].image,
+                              txt: displayMuseums[index].name),
+                        )
                       ],
                     ),
                   ),
@@ -163,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 SizedBox(height: 10),
-                Container(
+                SizedBox(
                   height: 200,
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
