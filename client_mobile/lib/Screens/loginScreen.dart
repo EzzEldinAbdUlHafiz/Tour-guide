@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 // ignore_for_file: prefer_const_literals_to_create_immutables
 // NUF ==> no user found
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
@@ -11,35 +12,80 @@ import '../models/User.dart';
 import 'dart:convert';
 import 'registerScreen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final email = TextEditingController();
   final password = TextEditingController();
-  bool flag = false;
 
-  Future<void> userLogin() async {
-    final response = await http.post(
-      Uri.parse('${Globals().uri}/user/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+  // bool flag = false;
+
+  // Future<void> userLogin() async {
+  //   final response = await http.post(
+  //     Uri.parse('${Globals().uri}/user/login'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: jsonEncode(<String, String>{
+  //       'email': email.text,
+  //       'password': password.text,
+  //     }),
+  //   );
+  //   String responseBody = utf8.decode(response.bodyBytes);
+  //   debugPrint(responseBody);
+  //   if (response.statusCode == 200) {
+  //     if (responseBody == "NUF") {
+  //       debugPrint('Response is empty');
+  //     } else {
+  //       debugPrint('user found');
+  //       flag = true;
+  //     }
+  //   } else {
+  //     throw Exception("Failed to load Users");
+  //   }
+  // }
+
+  void signUserIn() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
-      body: jsonEncode(<String, String>{
-        'email': email.text,
-        'password': password.text,
-      }),
     );
-    String responseBody = utf8.decode(response.bodyBytes);
-    debugPrint(responseBody);
-    if (response.statusCode == 200) {
-      if (responseBody == "NUF") {
-        debugPrint('Response is empty');
-      } else {
-        debugPrint('user found');
-        flag = true;
-      }
-    } else {
-      throw Exception("Failed to load Users");
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email.text,
+        password: password.text,
+      );
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
     }
+  }
+
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.redAccent,
+          title: Center(
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -113,16 +159,8 @@ class LoginScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  onPressed: () async {
-                    await userLogin();
-                    if (flag) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainScreen()),
-                      );
-                      flag = false;
-                    }
+                  onPressed: () {
+                    signUserIn();
                   },
                 ),
                 SizedBox(height: 10),

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
@@ -10,38 +11,88 @@ import '../models/User.dart';
 import 'dart:convert';
 
 // ignore: must_be_immutable
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final email = TextEditingController();
-  final name = TextEditingController();
   final password = TextEditingController();
+  final password2 = TextEditingController();
+
   // final phoneNumber = TextEditingController();
 
-  late Future<User> futureUser;
-  bool flag = false;
+  // late Future<User> futureUser;
+  // bool flag = false;
 
-  Future<void> userRegister() async {
-    http.Response response = await http.post(
-      Uri.parse('${Globals().uri}/user/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
+  // Future<void> userRegister() async {
+  //   http.Response response = await http.post(
+  //     Uri.parse('${Globals().uri}/user/register'),
+  //     headers: <String, String>{
+  //       'Content-Type': 'application/json; charset=UTF-8',
+  //     },
+  //     body: jsonEncode(<String, String>{
+  //       'name': name.text,
+  //       'email': email.text,
+  //       'password': password.text,
+  //     }),
+  //   );
+  //   if (response.statusCode == 200) {
+  //     if (response.body.isEmpty) {
+  //       debugPrint('Response is empty');
+  //     } else {
+  //       debugPrint(response.body);
+  //       flag = true;
+  //     }
+  //   } else {
+  //     debugPrint('Error: ${response.statusCode}');
+  //   }
+  // }
+
+  void signUserUp() async {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
       },
-      body: jsonEncode(<String, String>{
-        'name': name.text,
-        'email': email.text,
-        'password': password.text,
-      }),
     );
-    if (response.statusCode == 200) {
-      if (response.body.isEmpty) {
-        debugPrint('Response is empty');
+    try {
+      if (password.text == password2.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: email.text,
+          password: password.text,
+        );
       } else {
-        debugPrint(response.body);
-        flag = true;
+        showErrorMessage("Passwords don't match");
       }
-    } else {
-      debugPrint('Error: ${response.statusCode}');
+      Navigator.pop(context);
+      Navigator.pop(context);
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      showErrorMessage(e.code);
     }
+  }
+
+  void showErrorMessage(String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.redAccent,
+          title: Center(
+            child: Text(
+              message,
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -77,14 +128,6 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 10),
 
-                // username
-                MyTextField(
-                  controller: name,
-                  obscureText: false,
-                  hintText: 'Enter your name',
-                  keyboardType: TextInputType.name,
-                ),
-
                 MyTextField(
                   controller: email,
                   obscureText: false,
@@ -93,10 +136,18 @@ class RegisterScreen extends StatelessWidget {
                 ),
 
                 MyTextField(
-                    controller: password,
-                    obscureText: true,
-                    hintText: 'Enter your password',
-                    keyboardType: TextInputType.visiblePassword),
+                  controller: password,
+                  obscureText: true,
+                  hintText: 'Enter your password',
+                  keyboardType: TextInputType.visiblePassword,
+                ),
+
+                MyTextField(
+                  controller: password2,
+                  obscureText: true,
+                  hintText: 'Confirm password',
+                  keyboardType: TextInputType.visiblePassword,
+                ),
 
                 // MyTextField(
                 //   controller: phoneNumber,
@@ -119,16 +170,8 @@ class RegisterScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  onPressed: () async {
-                    await userRegister();
-                    if (flag) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const MainScreen()),
-                      );
-                      flag = false;
-                    }
+                  onPressed: () {
+                    signUserUp();
                   },
                 ),
                 SizedBox(height: 10),
