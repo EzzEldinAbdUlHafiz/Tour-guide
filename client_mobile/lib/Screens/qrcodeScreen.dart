@@ -60,9 +60,10 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => ArtifactScreen(
-                                          name: result!.code,
-                                        )),
+                                  builder: (context) => ArtifactScreen(
+                                    name: result!.code,
+                                  ),
+                                ),
                               );
                             },
                             style: const ButtonStyle(

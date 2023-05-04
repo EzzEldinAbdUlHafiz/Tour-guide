@@ -1,16 +1,18 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
-
 import 'package:flutter/material.dart';
+import 'package:tutguide/models/Museum.dart';
 import '../museumScreen.dart';
 
 class SmallCard extends StatelessWidget {
   final String img;
   final String txt;
+  final Museum museum;
 
   SmallCard({
     Key? key,
     required this.img,
     required this.txt,
+    required this.museum,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,11 @@ class SmallCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MuseumScreen()),
+            MaterialPageRoute(
+              builder: (context) => MuseumScreen(
+                museum: museum,
+              ),
+            ),
           );
         },
         child: Column(

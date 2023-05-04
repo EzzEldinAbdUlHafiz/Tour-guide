@@ -4,14 +4,14 @@ class Artifact {
   final String name;
   final String museum;
   final String description;
-  final String image;
+  final List<dynamic> images;
   final String video;
 
   const Artifact(
       {required this.name,
       required this.museum,
       required this.description,
-      required this.image,
+      required this.images,
       required this.video});
 
   factory Artifact.fromJson(Map<String, dynamic> json) {
@@ -19,8 +19,15 @@ class Artifact {
       name: json['name'],
       museum: json['museum'],
       description: json['description'],
-      image: json['image'],
+      images: json['image'],
       video: json['video'],
     );
+  }
+  static List<Artifact> fromJsonList(List<dynamic> jsonList) {
+    List<Artifact> artifact = [];
+    for (var json in jsonList) {
+      artifact.add(Artifact.fromJson(json));
+    }
+    return artifact;
   }
 }

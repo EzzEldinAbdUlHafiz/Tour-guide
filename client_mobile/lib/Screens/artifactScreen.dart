@@ -1,102 +1,103 @@
 // ignore_for_file: prefer_const_constructors
-
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:tutguide/Screens/components/videoPlayer.dart';
+import 'package:tutguide/Globals.dart';
+import 'package:tutguide/models/Artifact.dart';
 
-class ArtifactScreen extends StatelessWidget {
+class ArtifactScreen extends StatefulWidget {
   final String? name;
-  final List<String> dummyImages = [
-    'assets/images/img1.jpg',
-    'assets/images/artifact.png',
-    'assets/images/artifact.png',
-    'assets/images/artifact.png',
-    'assets/images/artifact.png',
-    'assets/images/artifact.png',
-  ];
-
-  ArtifactScreen({super.key, required this.name});
+  const ArtifactScreen({super.key, required this.name});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Stack(
-                children: [
-                  PageView(
-                    children: dummyImages.map((image) {
-                      return Container(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage(image),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  Positioned(
-                    top: 32.0,
-                    left: 16.0,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back),
-                      onPressed: () => Navigator.pop(context),
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 32.0,
-                    left: 16.0,
-                    child: Text(
-                      name!,
-                      style: GoogleFonts.roboto(
-                        fontSize: 24.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 3,
-              child: Container(
-                padding: EdgeInsets.all(16.0),
-                color: Colors.white,
-                child: Text(
-                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at nunc velit. Aenean volutpat, odio ut molestie aliquam, quam risus gravida felis, sit amet dapibus ipsum sapien in libero. Curabitur quis consequat metus, ut finibus risus. Sed vel lectus quis eros tristique mollis in eu libero. Nulla facilisi. Sed vehicula dolor nisi, vel tincidunt enim pharetra ut. Donec vitae erat in purus lacinia aliquet. Proin vel ligula a justo viverra posuere. Curabitur pharetra urna ut consequat efficitur. Sed et gravida mauris. Nam sit amet malesuada est, ut rhoncus felis. In vulputate euismod turpis eu rhoncus. Nulla malesuada quam sapien, nec bibendum augue blandit ut.',
-                  style: GoogleFonts.roboto(
-                    fontSize: 16.0,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  State<ArtifactScreen> createState() => _ArtifactScreenState();
 }
 
-class ArtifactDetailPage extends StatelessWidget {
-  final String artifactName;
-
-  const ArtifactDetailPage({super.key, required this.artifactName});
+class _ArtifactScreenState extends State<ArtifactScreen> {
+  Future<Artifact> getArtifact() async {
+    final response =
+        await http.get(Uri.parse('${Globals().uri}/artifact/${widget.name!}'));
+    if (response.statusCode == 200) {
+      return Artifact.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to load Artifact");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(artifactName),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(13),
+          ),
+        ),
+        title: Text(widget.name!),
+        backgroundColor: Colors.amber,
       ),
-      body: Center(
-        child: Text('This is the $artifactName detail page.'),
+      body: SafeArea(
+        minimum: const EdgeInsets.all(15),
+        child: FutureBuilder(
+          future: getArtifact(),
+          builder: (context, snapshot) {
+            if (snapshot.data == null) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: SizedBox(
+                            height: 450,
+                            child: Row(
+                              children: [
+                                ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data!.images.length,
+                                    itemBuilder: (context, index) {
+                                      return Image.network(
+                                        snapshot.data!.images[index],
+                                      );
+                                    })
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15.0),
+                        const Text(
+                          "Description:",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 140,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: Text(
+                              snapshot.data!.description,
+                              style: const TextStyle(fontSize: 17),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

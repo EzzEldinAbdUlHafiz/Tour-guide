@@ -3,13 +3,7 @@
 // NUF ==> no user found
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/myTextField.dart';
-import 'package:tutguide/Screens/homeScreen.dart';
-import 'package:tutguide/Screens/mainScreen.dart';
-import 'package:http/http.dart' as http;
-import '../models/User.dart';
-import 'dart:convert';
 import 'registerScreen.dart';
 
 class LoginScreen extends StatefulWidget {

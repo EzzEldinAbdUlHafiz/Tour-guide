@@ -194,8 +194,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           scrollDirection: Axis.horizontal,
                           itemCount: displayMuseums.length,
                           itemBuilder: (context, index) => SmallCard(
-                              img: displayMuseums[index].image,
-                              txt: displayMuseums[index].name),
+                            img: displayMuseums[index].image,
+                            txt: displayMuseums[index].name,
+                            museum: displayMuseums[index],
+                          ),
                         )
                       ],
                     ),

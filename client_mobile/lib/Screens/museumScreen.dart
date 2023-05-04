@@ -1,92 +1,98 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:tutguide/Screens/artifactScreen.dart';
+// ignore_for_file: file_names
 
-class MuseumScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:tutguide/Screens/artifactScreen.dart';
+import 'package:tutguide/models/Museum.dart';
+
+class MuseumScreen extends StatefulWidget {
+  final Museum museum;
+  const MuseumScreen({super.key, required this.museum});
+
+  @override
+  State<MuseumScreen> createState() => _MuseumScreenState();
+}
+
+class _MuseumScreenState extends State<MuseumScreen> {
   @override
   Widget build(BuildContext context) {
-    final String museumName = "National Museum of Natural History";
-    final String museumImage = "assets/images/img3.jpg";
-    final String museumInfo =
-        "The National Museum of Natural History is a natural history museum administered by the Smithsonian Institution, located on the National Mall in Washington, D.C., United States. With free admission and open doors 364 days a year, it is the third most visited museum in the world.";
-    final String museumAddress =
-        "10th St. & Constitution Ave. NW, Washington, DC 20560";
-    final List<Map<String, dynamic>> artifacts = [
-      {
-        'name': 'Hope Diamond',
-        'image': 'assets/images/artifact.png',
-      },
-      {
-        'name': 'Hall of Mammals',
-        'image': 'assets/images/artifact.png',
-      },
-      {
-        'name': 'Butterfly Pavilion',
-        'image': 'assets/images/artifact.png',
-      },
-      {
-        'name': 'Ocean Hall',
-        'image': 'assets/images/artifact.png',
-      },
-      {
-        'name': 'Dinosaurs',
-        'image': 'assets/images/artifact.png',
-      },
-    ];
-
     return Scaffold(
       appBar: AppBar(
-        title: Text(museumName),
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            bottom: Radius.circular(13),
+          ),
+        ),
+        title: Text(widget.museum.name),
+        backgroundColor: Colors.amber,
       ),
-      body: Column(
-        children: [
-          // Museum Image and Information Section
-          Container(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
+      body: SafeArea(
+        minimum: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.asset(museumImage),
-                SizedBox(height: 16.0),
-                Text(museumInfo),
+                Image.network(widget.museum.image),
+                const SizedBox(height: 15.0),
+                const Text(
+                  "Description:",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                SizedBox(
+                  height: 140,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      widget.museum.description,
+                      style: const TextStyle(fontSize: 17),
+                    ),
+                  ),
+                ),
                 Text(
-                  'Location Address: $museumAddress',
-                  style: TextStyle(fontWeight: FontWeight.bold, height: 1.5),
+                  'Location Address: ${widget.museum.address}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    height: 1.5,
+                  ),
                 ),
               ],
             ),
-          ),
-
-          // Artifacts List Section
-          Expanded(
-            child: ListView.builder(
-              itemCount: artifacts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Image.asset(
-                    artifacts[index]['image'],
-                    width: 50,
-                    height: 50,
-                  ),
-                  title: Text(artifacts[index]['name']),
-                  onTap: () {
-                    // Navigate to artifact details page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ArtifactScreen(
-                          name: artifacts[index]['name'],
-                        ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: widget.museum.artifacts.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey.shade300)),
+                    child: ListTile(
+                      leading: Image.asset(
+                        "assets/images/artifact.png",
+                        width: 50,
+                        height: 50,
                       ),
-                    );
-                  },
-                );
-              },
+                      title: Text(widget.museum.artifacts[index]),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ArtifactScreen(
+                              name: widget.museum.artifacts[index],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
-          ),
-
-          // Museum Location Map Section
-        ],
+          ],
+        ),
       ),
     );
   }

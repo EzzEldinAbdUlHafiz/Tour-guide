@@ -34,7 +34,7 @@ router.post("/museum/insertMuseum", (req, res) => {
 });
 
 router.get("/event/getEvent", (req, res) => {
-  user.findAll(req, res);
+  event.findAll(req, res);
 });
 
 router.post("/event/insertEvent", (req, res) => {
@@ -42,7 +42,7 @@ router.post("/event/insertEvent", (req, res) => {
 });
 
 router.get("/artifact/getArtifacts", (req, res) => {
-  user.findAll(req, res);
+  artifact.findAll(req, res);
 });
 
 router.get("/artifact/:name", (req, res) => {

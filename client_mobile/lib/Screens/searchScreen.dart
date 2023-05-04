@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:tutguide/Globals.dart';
-import 'package:tutguide/models/Museum.dart';
+import 'package:tutguide/Screens/artifactScreen.dart';
+import 'package:tutguide/models/Artifact.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -14,36 +14,38 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  static List<Museum> museumsList = [];
-  late List<Museum> displayMuseums = [];
+  static List<Artifact> artifactList = [];
+  late List<Artifact> displayArtifact = [];
 
-  Future<void> getMuseums() async {
+  Future<void> getArtifacts() async {
     final response =
-        await http.get(Uri.parse('${Globals().uri}/museum/getMuseums'));
+        await http.get(Uri.parse('${Globals().uri}/artifact/getArtifacts'));
     if (response.statusCode == 200) {
-      museumsList = Museum.fromJsonList(jsonDecode(response.body));
+      artifactList = Artifact.fromJsonList(jsonDecode(response.body));
       // return Museum.fromJsonList(jsonDecode(response.body));
       setState(() {
-        displayMuseums = List.from(museumsList);
+        displayArtifact = List.from(artifactList);
       });
     } else {
-      throw Exception("Failed to load Museums");
+      throw Exception("Failed to load Artifacts");
     }
   }
 
   void updateList(String value) {
-    setState(() {
-      displayMuseums = museumsList
-          .where((element) =>
-              element.name.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
+    setState(
+      () {
+        displayArtifact = artifactList
+            .where((element) =>
+                element.name.toLowerCase().contains(value.toLowerCase()))
+            .toList();
+      },
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    getMuseums();
+    getArtifacts();
   }
 
   @override
@@ -61,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Search for a Museum",
+              "Search for an Artifact",
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
@@ -77,16 +79,16 @@ class _SearchScreenState extends State<SearchScreen> {
                   borderRadius: BorderRadius.circular(20),
                   borderSide: BorderSide.none,
                 ),
-                hintText: "eg: Grand Egyptian Museum",
+                hintText: "eg: throne of tutankhamun",
                 prefixIcon: Icon(Icons.search),
                 prefixIconColor: Colors.black,
               ),
             ),
             SizedBox(height: 20),
             Expanded(
-              child: displayMuseums.isEmpty
+              child: displayArtifact.isEmpty
                   ? Center(
-                      child: museumsList.isNotEmpty
+                      child: artifactList.isNotEmpty
                           ? Text(
                               "No results found",
                               style: TextStyle(
@@ -97,17 +99,17 @@ class _SearchScreenState extends State<SearchScreen> {
                           : CircularProgressIndicator(),
                     )
                   : ListView.builder(
-                      itemCount: displayMuseums.length,
+                      itemCount: displayArtifact.length,
                       itemBuilder: (context, index) => ListTile(
                         contentPadding: EdgeInsets.all(10),
                         title: Text(
-                          displayMuseums[index].name,
+                          displayArtifact[index].name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         subtitle: Text(
-                          displayMuseums[index].city,
+                          displayArtifact[index].museum,
                           style: TextStyle(
                             color: Colors.grey,
                           ),
@@ -115,12 +117,22 @@ class _SearchScreenState extends State<SearchScreen> {
                         leading: FadeInImage(
                           placeholder: AssetImage('assets/images/loading.gif'),
                           image: NetworkImage(
-                            displayMuseums[index].image,
+                            displayArtifact[index].images[0],
                           ),
                           fit: BoxFit.scaleDown,
                           width: 60,
                           height: 60,
                         ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ArtifactScreen(
+                                name: displayArtifact[index].name,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
             ),
