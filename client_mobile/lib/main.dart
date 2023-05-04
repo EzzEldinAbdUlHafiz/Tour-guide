@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tutguide/Screens/components/videoPlayer.dart';
 import 'package:tutguide/Screens/eventScreen.dart';
 import 'package:tutguide/Screens/events.dart';
@@ -16,6 +17,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
+  //   SystemUiOverlay.bottom,
+  // ]);
   runApp(const MyApp());
 }
 

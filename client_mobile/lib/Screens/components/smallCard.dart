@@ -1,19 +1,17 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables
-// ignore_for_file: prefer_const_constructors
-import 'package:flutter/material.dart';
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
-import '../MuseumsPage.dart';
+import 'package:flutter/material.dart';
+import '../museumScreen.dart';
 
 class SmallCard extends StatelessWidget {
-  // const SmallCard({super.key});
   final String img;
   final String txt;
 
   SmallCard({
-    super.key,
+    Key? key,
     required this.img,
     required this.txt,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +21,7 @@ class SmallCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => MuseumPage()),
+            MaterialPageRoute(builder: (context) => MuseumScreen()),
           );
         },
         child: Column(
@@ -38,9 +36,10 @@ class SmallCard extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: Image.asset(
-                  img,
-                  fit: BoxFit.cover,
+                child: FadeInImage(
+                  placeholder: AssetImage('assets/images/loading.gif'),
+                  image: NetworkImage(img),
+                  fit: BoxFit.scaleDown,
                 ),
               ),
             ),

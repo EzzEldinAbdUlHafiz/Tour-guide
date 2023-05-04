@@ -112,10 +112,14 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: Colors.grey,
                           ),
                         ),
-                        leading: Image.asset(
-                          displayMuseums[index].image,
-                          height: 60,
+                        leading: FadeInImage(
+                          placeholder: AssetImage('assets/images/loading.gif'),
+                          image: NetworkImage(
+                            displayMuseums[index].image,
+                          ),
+                          fit: BoxFit.scaleDown,
                           width: 60,
+                          height: 60,
                         ),
                       ),
                     ),

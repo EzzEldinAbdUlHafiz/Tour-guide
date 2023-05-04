@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/eventCard.dart';
 import 'package:tutguide/Screens/components/smallCard.dart';
+import 'package:tutguide/Screens/qrcodeScreen.dart';
 import 'package:tutguide/models/Museum.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -135,7 +136,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               onPressed: () {
-                                
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => QRCodeScreen()),
+                                );
                               },
                             ),
                           ],
