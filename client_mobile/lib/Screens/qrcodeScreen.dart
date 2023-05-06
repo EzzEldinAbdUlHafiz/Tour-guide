@@ -14,6 +14,7 @@ class QRCodeScreen extends StatefulWidget {
 }
 
 class _QRCodeScreenState extends State<QRCodeScreen> {
+  double h = 0, w = 0, topPadding = 0;
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
@@ -31,127 +32,94 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    topPadding = MediaQuery.of(context).padding.top;
+    h = MediaQuery.of(context).size.height - topPadding;
+    w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-        child:
-            // Expanded(flex: 4, child: _buildQrView(context)),
-            Column(
-          children: <Widget>[
-            Expanded(
-              flex: 4,
-              child: _buildQrView(context),
-            ),
-            Expanded(
-              flex: 1,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    if (result != null)
-                      Column(
-                        children: [
-                          Text(
-                            '${result!.code}',
-                            style: const TextStyle(fontSize: 5),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ArtifactScreen(
-                                    name: result!.code,
-                                  ),
+        child: Stack(
+          children: [
+            Expanded(child: _buildQrView(context)),
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
+                  child: result != null
+                      ? ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArtifactScreen(
+                                  name: result!.code,
                                 ),
-                              );
-                            },
-                            style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll(
-                                Colors.amber,
                               ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            maximumSize: const Size(200, 100),
+                            backgroundColor: Colors.amberAccent,
+                            padding: const EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                            child: Text(
-                              '${result!.code}',
-                              style: const TextStyle(fontSize: 5),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Flexible(
+                                child: Text(
+                                  '${result!.code}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Icon(
+                                Icons.arrow_forward,
+                                color: Colors.black,
+                              )
+                            ],
+                          ),
+                        )
+                      : ElevatedButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.transparent,
+                            padding: const EdgeInsets.all(15),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
                             ),
-                          )
-                        ],
-                      )
-                    else
-                      const Text(
-                        'Scan a code',
-                        style: TextStyle(fontSize: 10),
-                      ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     Container(
-                    //       margin: const EdgeInsets.all(8),
-                    //       child: ElevatedButton(
-                    //           onPressed: () async {
-                    //             await controller?.toggleFlash();
-                    //             setState(() {});
-                    //           },
-                    //           child: FutureBuilder(
-                    //             future: controller?.getFlashStatus(),
-                    //             builder: (context, snapshot) {
-                    //               return Text('Flash: ${snapshot.data}');
-                    //             },
-                    //           )),
-                    //     ),
-                    //     Container(
-                    //       margin: const EdgeInsets.all(8),
-                    //       child: ElevatedButton(
-                    //           onPressed: () async {
-                    //             await controller?.flipCamera();
-                    //             setState(() {});
-                    //           },
-                    //           child: FutureBuilder(
-                    //             future: controller?.getCameraInfo(),
-                    //             builder: (context, snapshot) {
-                    //               if (snapshot.data != null) {
-                    //                 return Text(
-                    //                     'Camera facing ${describeEnum(snapshot.data!)}');
-                    //               } else {
-                    //                 return const Text('loading');
-                    //               }
-                    //             },
-                    //           )),
-                    //     )
-                    //   ],
-                    // ),
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                    //   children: <Widget>[
-                    //     Container(
-                    //       margin: const EdgeInsets.all(8),
-                    //       child: ElevatedButton(
-                    //         onPressed: () async {
-                    //           await controller?.pauseCamera();
-                    //         },
-                    //         child: const Text('pause',
-                    //             style: TextStyle(fontSize: 20)),
-                    //       ),
-                    //     ),
-                    //     Container(
-                    //       margin: const EdgeInsets.all(8),
-                    //       child: ElevatedButton(
-                    //         onPressed: () async {
-                    //           await controller?.resumeCamera();
-                    //         },
-                    //         child: const Text('resume',
-                    //             style: TextStyle(fontSize: 20)),
-                    //       ),
-                    //     )
-                    //   ],
-                    // ),
-                  ],
+                          ),
+                          child: const Text(
+                            'Scanning',
+                            style: TextStyle(fontSize: 20, color: Colors.grey),
+                          ),
+                        ),
                 ),
               ),
-            )
+            ),
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                margin: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white38,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.keyboard_arrow_left_rounded,
+                  size: 35,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -170,10 +138,10 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
+          borderColor: Colors.amber,
           borderRadius: 10,
           borderLength: 30,
-          borderWidth: 10,
+          borderWidth: 5,
           cutOutSize: scanArea),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );

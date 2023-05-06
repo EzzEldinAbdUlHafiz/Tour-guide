@@ -16,79 +16,114 @@ class _MuseumScreenState extends State<MuseumScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(13),
-          ),
-        ),
-        title: Text(widget.museum.name),
-        backgroundColor: Colors.amber,
-      ),
       body: SafeArea(
-        minimum: const EdgeInsets.all(15),
-        child: Column(
+        child: Stack(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Image.network(widget.museum.image),
-                const SizedBox(height: 15.0),
-                const Text(
-                  "Description:",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text(
+                    widget.museum.name,
+                    style: const TextStyle(
+                        fontSize: 30, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15),
+                  child: Text(
+                    "Description:",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                SizedBox(
-                  height: 140,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Text(
-                      widget.museum.description,
-                      style: const TextStyle(fontSize: 17),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: SizedBox(
+                    height: 140,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Text(
+                        widget.museum.description,
+                        style: const TextStyle(fontSize: 17),
+                      ),
                     ),
                   ),
                 ),
-                Text(
-                  'Location Address: ${widget.museum.address}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    height: 1.5,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                  child: Text(
+                    'Location Address: ${widget.museum.address}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      height: 1.5,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+                  child: Text(
+                    "Artifacts:",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.museum.artifacts.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey.shade300)),
+                        child: ListTile(
+                          leading: Image.asset(
+                            "assets/images/artifact.png",
+                            width: 50,
+                            height: 50,
+                          ),
+                          title: Text(widget.museum.artifacts[index]),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ArtifactScreen(
+                                  name: widget.museum.artifacts[index],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.museum.artifacts.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey.shade300)),
-                    child: ListTile(
-                      leading: Image.asset(
-                        "assets/images/artifact.png",
-                        width: 50,
-                        height: 50,
-                      ),
-                      title: Text(widget.museum.artifacts[index]),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ArtifactScreen(
-                              name: widget.museum.artifacts[index],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
+            InkWell(
+              onTap: () {
+                Navigator.pop(context);
+              },
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                margin: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.white38,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(
+                  Icons.keyboard_arrow_left_rounded,
+                ),
               ),
             ),
           ],

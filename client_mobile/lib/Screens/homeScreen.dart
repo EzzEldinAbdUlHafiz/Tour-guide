@@ -9,6 +9,8 @@ import 'package:tutguide/models/Museum.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:tutguide/storage.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -19,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   static List<Museum> museumsList = [];
   late List<Museum> displayMuseums = [];
+  final Storage storage = Storage();
 
   Future<void> getMuseums() async {
     final response =
@@ -193,11 +196,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: displayMuseums.length,
-                          itemBuilder: (context, index) => SmallCard(
-                            img: displayMuseums[index].image,
-                            txt: displayMuseums[index].name,
-                            museum: displayMuseums[index],
-                          ),
+                          itemBuilder: (context, index) {
+                            return FutureBuilder(
+                              future: storage
+                                  .downloadURL(displayMuseums[index].image),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  return SmallCard(
+                                    img: snapshot.data!,
+                                    txt: displayMuseums[index].name,
+                                    museum: displayMuseums[index],
+                                  );
+                                }
+                                return Container();
+                              },
+                            );
+                          },
                         )
                       ],
                     ),

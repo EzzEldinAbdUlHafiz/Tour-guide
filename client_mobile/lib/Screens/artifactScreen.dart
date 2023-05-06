@@ -59,14 +59,15 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                             child: Row(
                               children: [
                                 ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: snapshot.data!.images.length,
-                                    itemBuilder: (context, index) {
-                                      return Image.network(
-                                        snapshot.data!.images[index],
-                                      );
-                                    })
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: snapshot.data!.images.length,
+                                  itemBuilder: (context, index) {
+                                    return Image.network(
+                                      snapshot.data!.images[index],
+                                    );
+                                  },
+                                )
                               ],
                             ),
                           ),

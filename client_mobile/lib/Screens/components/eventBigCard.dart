@@ -120,52 +120,48 @@ class _EventBigCardState extends State<EventBigCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          '15 Mar 2023',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  Column(
+                    children: [
+                      Text(
+                        '15 Mar 2023',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Date',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Date',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                  Container(
+                  SizedBox(
                     height: 50,
                     child: VerticalDivider(
                         thickness: 0.5, color: Colors.grey.shade700),
                   ),
-                  Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          '21:00',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  Column(
+                    children: [
+                      Text(
+                        '21:00',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Time',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey,
-                          ),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        'Time',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

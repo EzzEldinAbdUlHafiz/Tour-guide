@@ -31,7 +31,7 @@ class SmallCard extends StatelessWidget {
           );
         },
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
               height: 100,
@@ -42,10 +42,19 @@ class SmallCard extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10.0),
-                child: FadeInImage(
-                  placeholder: AssetImage('assets/images/loading.gif'),
-                  image: NetworkImage(img),
-                  fit: BoxFit.scaleDown,
+                child: Image.network(
+                  img,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (_, child, progress) {
+                    if (progress == null) {
+                      return child;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 30),
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ),
             ),
@@ -60,3 +69,10 @@ class SmallCard extends StatelessWidget {
     );
   }
 }
+
+
+// FadeInImage(
+//                   placeholder: AssetImage('assets/images/loading.gif'),
+//                   image: NetworkImage(img),
+//                   fit: BoxFit.cover,
+//                 ),

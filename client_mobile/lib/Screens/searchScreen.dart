@@ -114,14 +114,15 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: Colors.grey,
                           ),
                         ),
-                        leading: FadeInImage(
-                          placeholder: AssetImage('assets/images/loading.gif'),
-                          image: NetworkImage(
-                            displayArtifact[index].images[0],
-                          ),
-                          fit: BoxFit.scaleDown,
-                          width: 60,
-                          height: 60,
+                        leading: Image.network(
+                          displayArtifact[index].images[0],
+                          fit: BoxFit.cover,
+                          loadingBuilder: (_, child, progress) {
+                            if (progress == null) {
+                              return child;
+                            }
+                            return CircularProgressIndicator();
+                          },
                         ),
                         onTap: () {
                           Navigator.push(
@@ -142,3 +143,15 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 }
+
+
+
+// FadeInImage(
+//                           placeholder: AssetImage('assets/images/loading.gif'),
+//                           image: NetworkImage(
+//                             displayArtifact[index].images[0],
+//                           ),
+//                           fit: BoxFit.scaleDown,
+//                           width: 60,
+//                           height: 60,
+//                         ),
