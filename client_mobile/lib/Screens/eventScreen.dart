@@ -1,10 +1,12 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 // ignore_for_file: prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/components/eventCard.dart';
 
 class EventScreen extends StatelessWidget {
   double h = 0, w = 0, topPadding = 0;
+
+  EventScreen({super.key});
   @override
   Widget build(BuildContext context) {
     topPadding = MediaQuery.of(context).padding.top;

@@ -9,7 +9,7 @@ const artifactSchema = mongoose.Schema({
     type: String,
     required: true,
   },
- 
+
   description: {
     type: String,
     required: true,
@@ -23,7 +23,6 @@ const artifactSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  
 });
 
 const Artifact = mongoose.model("Artifact", artifactSchema);

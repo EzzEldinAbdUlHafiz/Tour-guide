@@ -97,22 +97,35 @@ class _MuseumScreenState extends State<MuseumScreen> {
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey.shade300)),
-                        child: ListTile(
-                          leading: Image.asset(
-                            "assets/images/artifact.png",
-                            width: 50,
-                            height: 50,
-                          ),
-                          title: Text(widget.museum.artifacts[index]),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ArtifactScreen(
-                                  name: widget.museum.artifacts[index],
+                        child: FutureBuilder(
+                          future: storage.downloadURL(
+                              widget.museum.artifacts[index].images[0]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.hasData) {
+                              return ListTile(
+                                leading: Image.network(
+                                  snapshot.data!,
+                                  width: 50,
+                                  height: 50,
                                 ),
-                              ),
-                            );
+                                title:
+                                    Text(widget.museum.artifacts[index].name),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ArtifactScreen(
+                                        name:
+                                            widget.museum.artifacts[index].name,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                            return Container();
                           },
                         ),
                       );

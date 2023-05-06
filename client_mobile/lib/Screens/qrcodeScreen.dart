@@ -1,10 +1,13 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/artifactScreen.dart';
 import 'package:tutguide/models/Artifact.dart';
+import 'package:tutguide/storage.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class QRCodeScreen extends StatefulWidget {
   const QRCodeScreen({Key? key}) : super(key: key);
@@ -18,6 +21,15 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
   Barcode? result;
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  bool flag = false;
+
+  Future<void> getArtifact() async {
+    final response =
+        await http.get(Uri.parse('${Globals().uri}/artifact/${result!.code}'));
+    if (response.statusCode == 200) {
+      flag = true;
+    }
+  }
 
   // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -45,7 +57,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   margin: const EdgeInsets.fromLTRB(0, 0, 0, 100),
-                  child: result != null
+                  child: flag
                       ? ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -58,7 +70,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            maximumSize: const Size(200, 100),
+                            maximumSize: Size(w * 0.75, 100),
                             backgroundColor: Colors.amberAccent,
                             padding: const EdgeInsets.all(15),
                             shape: RoundedRectangleBorder(
@@ -154,6 +166,7 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
+        getArtifact();
         debugPrint(result!.code);
       });
     });

@@ -36,7 +36,7 @@ class SmallCard extends StatelessWidget {
             Container(
               height: 100,
               width: 125,
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(5),
               decoration: BoxDecoration(
                 color: Colors.transparent,
               ),
