@@ -6,6 +6,8 @@ import 'package:tutguide/models/Artifact.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:tutguide/storage.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -16,6 +18,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   static List<Artifact> artifactList = [];
   late List<Artifact> displayArtifact = [];
+  final Storage storage = Storage();
 
   Future<void> getArtifacts() async {
     final response =
@@ -114,12 +117,23 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: Colors.grey,
                           ),
                         ),
-                        leading: Image.network(
-                          displayArtifact[index].images[0],
-                          fit: BoxFit.cover,
-                          loadingBuilder: (_, child, progress) {
-                            if (progress == null) {
-                              return child;
+                        leading: FutureBuilder(
+                          future: storage
+                              .downloadURL(displayArtifact[index].images[0]),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.hasData) {
+                              return Image.network(
+                                snapshot.data!,
+                                fit: BoxFit.cover,
+                                loadingBuilder: (_, child, progress) {
+                                  if (progress == null) {
+                                    return child;
+                                  }
+                                  return CircularProgressIndicator();
+                                },
+                              );
                             }
                             return CircularProgressIndicator();
                           },

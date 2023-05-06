@@ -6,7 +6,7 @@ class Storage {
       firebase_storage.FirebaseStorage.instance;
 
   Future<String> downloadURL(String name) async {
-    debugPrint("fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
+    debugPrint("Downloading");
     String downloadURL = await storage.ref(name).getDownloadURL();
     debugPrint(downloadURL);
     return downloadURL;

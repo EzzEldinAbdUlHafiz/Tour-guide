@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tutguide/Globals.dart';
 import 'package:tutguide/models/Artifact.dart';
+import 'package:tutguide/storage.dart';
 
 class ArtifactScreen extends StatefulWidget {
   final String? name;
@@ -14,6 +15,7 @@ class ArtifactScreen extends StatefulWidget {
 }
 
 class _ArtifactScreenState extends State<ArtifactScreen> {
+  final Storage storage = Storage();
   Future<Artifact> getArtifact() async {
     final response =
         await http.get(Uri.parse('${Globals().uri}/artifact/${widget.name!}'));
@@ -27,15 +29,6 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(13),
-          ),
-        ),
-        title: Text(widget.name!),
-        backgroundColor: Colors.amber,
-      ),
       body: SafeArea(
         minimum: const EdgeInsets.all(15),
         child: FutureBuilder(
@@ -63,8 +56,17 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                                   scrollDirection: Axis.horizontal,
                                   itemCount: snapshot.data!.images.length,
                                   itemBuilder: (context, index) {
-                                    return Image.network(
-                                      snapshot.data!.images[index],
+                                    return FutureBuilder(
+                                      future: storage.downloadURL(
+                                          snapshot.data!.images[index]),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                                ConnectionState.done &&
+                                            snapshot.hasData) {
+                                          return Image.network(snapshot.data!);
+                                        }
+                                        return Container();
+                                      },
                                     );
                                   },
                                 )

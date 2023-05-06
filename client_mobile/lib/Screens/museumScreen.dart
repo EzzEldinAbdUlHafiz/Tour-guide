@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/artifactScreen.dart';
 import 'package:tutguide/models/Museum.dart';
+import 'package:tutguide/storage.dart';
 
 class MuseumScreen extends StatefulWidget {
   final Museum museum;
@@ -13,6 +14,7 @@ class MuseumScreen extends StatefulWidget {
 }
 
 class _MuseumScreenState extends State<MuseumScreen> {
+  final Storage storage = Storage();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +24,16 @@ class _MuseumScreenState extends State<MuseumScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Image.network(widget.museum.image),
+                FutureBuilder(
+                  future: storage.downloadURL(widget.museum.image),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      return Image.network(snapshot.data!);
+                    }
+                    return Container();
+                  },
+                ),
                 Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: Text(
