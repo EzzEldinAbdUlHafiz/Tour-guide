@@ -7,7 +7,6 @@ import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/video_player.dart';
 import 'package:tutguide/models/Artifact.dart';
 import 'package:tutguide/storage.dart';
-import 'package:video_player/video_player.dart';
 
 class ArtifactScreen extends StatefulWidget {
   final String? name;

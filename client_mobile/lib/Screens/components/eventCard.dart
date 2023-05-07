@@ -1,15 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable
 
 import 'package:flutter/material.dart';
 
 import '../eventScreen.dart';
 
 class EventCard extends StatelessWidget {
-  // const EventCard({super.key});
-  String img;
-  String txt;
+  final String name;
+  final String img;
 
-  EventCard(this.img, {this.txt = ''});
+  const EventCard({super.key, required this.img, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,10 @@ class EventCard extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EventScreen()),
+            MaterialPageRoute(
+                builder: (context) => EventScreen(
+                      name: name,
+                    )),
           );
         },
         child: Column(
@@ -33,16 +35,26 @@ class EventCard extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
+                child: Image.network(
                   img,
                   fit: BoxFit.fitHeight,
+                  loadingBuilder: (_, child, progress) {
+                    if (progress == null) {
+                      return child;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 50, horizontal: 30),
+                      child: CircularProgressIndicator(),
+                    );
+                  },
                 ),
               ),
             ),
             SizedBox(height: 10),
             Container(
               padding: EdgeInsets.only(left: 5),
-              child: Text(txt),
+              child: Text(name),
             )
           ],
         ),

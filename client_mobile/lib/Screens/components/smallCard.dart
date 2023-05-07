@@ -69,10 +69,3 @@ class SmallCard extends StatelessWidget {
     );
   }
 }
-
-
-// FadeInImage(
-//                   placeholder: AssetImage('assets/images/loading.gif'),
-//                   image: NetworkImage(img),
-//                   fit: BoxFit.cover,
-//                 ),

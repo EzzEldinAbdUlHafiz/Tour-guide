@@ -3,32 +3,46 @@
 
 import 'package:flutter/material.dart';
 import 'package:tutguide/Screens/eventScreen.dart';
+import 'package:tutguide/storage.dart';
 
 class EventBigCard extends StatefulWidget {
+  final String name;
+  final String img;
+  final String location;
+  final String date;
+  final String time;
+  const EventBigCard(
+      {super.key,
+      required this.name,
+      required this.img,
+      required this.location,
+      required this.date,
+      required this.time});
   @override
   State<EventBigCard> createState() => _EventBigCardState();
 }
 
 class _EventBigCardState extends State<EventBigCard> {
-  Icon ic = Icon(Icons.favorite_border);
-  bool flag = false;
+  final Storage storage = Storage();
+  // Icon ic = Icon(Icons.favorite_border);
+  // bool flag = false;
 
-  void iconChange() {
-    setState(
-      () {
-        if (flag) {
-          ic = Icon(Icons.favorite_border);
-          flag = false;
-        } else {
-          ic = Icon(
-            Icons.favorite,
-            color: Colors.red,
-          );
-          flag = true;
-        }
-      },
-    );
-  }
+  // void iconChange() {
+  //   setState(
+  //     () {
+  //       if (flag) {
+  //         ic = Icon(Icons.favorite_border);
+  //         flag = false;
+  //       } else {
+  //         ic = Icon(
+  //           Icons.favorite,
+  //           color: Colors.red,
+  //         );
+  //         flag = true;
+  //       }
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +52,11 @@ class _EventBigCardState extends State<EventBigCard> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EventScreen()),
+            MaterialPageRoute(
+              builder: (context) => EventScreen(
+                name: widget.name,
+              ),
+            ),
           );
         },
         child: Container(
@@ -59,9 +77,19 @@ class _EventBigCardState extends State<EventBigCard> {
                       padding: EdgeInsets.all(5),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: Image.asset(
-                          "assets/images/img3.jpg",
-                          fit: BoxFit.cover,
+                        child: FutureBuilder(
+                          future: storage.downloadURL(widget.img),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.done &&
+                                snapshot.hasData) {
+                              return Image.network(
+                                snapshot.data!,
+                                fit: BoxFit.cover,
+                              );
+                            }
+                            return CircularProgressIndicator();
+                          },
                         ),
                       ),
                     ),
@@ -69,20 +97,23 @@ class _EventBigCardState extends State<EventBigCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 2, top: 10),
-                        child: Text(
-                          'PARTY',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.blueAccent,
-                          ),
-                        ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 2, top: 10),
+                      //   child: Text(
+                      //     'PARTY',
+                      //     style: TextStyle(
+                      //       fontSize: 10,
+                      //       color: Colors.blueAccent,
+                      //     ),
+                      //   ),
+                      // ),
+                      SizedBox(
+                        height: 20,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 2, top: 5),
                         child: Text(
-                          'My First Event',
+                          widget.name,
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
@@ -90,7 +121,7 @@ class _EventBigCardState extends State<EventBigCard> {
                       Padding(
                         padding: const EdgeInsets.only(left: 2, top: 10),
                         child: Text(
-                          'Alexandria',
+                          widget.location,
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
@@ -100,20 +131,20 @@ class _EventBigCardState extends State<EventBigCard> {
                     ],
                   ),
                   // SizedBox(width: 120),
-                  Expanded(
-                    child: Container(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: EdgeInsets.all(6),
-                        child: InkWell(
-                          onTap: () {
-                            iconChange();
-                          },
-                          child: ic,
-                        ),
-                      ),
-                    ),
-                  )
+                  // Expanded(
+                  //   child: Container(
+                  //     alignment: Alignment.centerRight,
+                  //     child: Padding(
+                  //       padding: EdgeInsets.all(6),
+                  //       child: InkWell(
+                  //         onTap: () {
+                  //           iconChange();
+                  //         },
+                  //         child: ic,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
               SizedBox(height: 10),
@@ -123,7 +154,7 @@ class _EventBigCardState extends State<EventBigCard> {
                   Column(
                     children: [
                       Text(
-                        '15 Mar 2023',
+                        widget.date,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
@@ -147,7 +178,7 @@ class _EventBigCardState extends State<EventBigCard> {
                   Column(
                     children: [
                       Text(
-                        '21:00',
+                        widget.time,
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,

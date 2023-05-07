@@ -11,7 +11,6 @@ const findAll = (req, res) => {
     });
 };
 
-
 const insertEvent = (req, res) => {
   const data = new event(req.body);
   data
@@ -24,4 +23,17 @@ const insertEvent = (req, res) => {
     });
 };
 
-module.exports = { findAll, insertEvent };
+const findByName = (req, res) => {
+  event
+    .findOne({
+      name: req.params.name,
+    })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+module.exports = { findAll, insertEvent, findByName };

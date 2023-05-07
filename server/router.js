@@ -33,8 +33,12 @@ router.post("/museum/insertMuseum", (req, res) => {
   museum.insertMuseum(req, res);
 });
 
-router.get("/event/getEvent", (req, res) => {
+router.get("/event/getEvents", (req, res) => {
   event.findAll(req, res);
+});
+
+router.get("/event/:name", (req, res) => {
+  event.findByName(req, res);
 });
 
 router.post("/event/insertEvent", (req, res) => {

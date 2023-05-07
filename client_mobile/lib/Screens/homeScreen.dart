@@ -5,6 +5,7 @@ import 'package:tutguide/Globals.dart';
 import 'package:tutguide/Screens/components/eventCard.dart';
 import 'package:tutguide/Screens/components/smallCard.dart';
 import 'package:tutguide/Screens/qrcodeScreen.dart';
+import 'package:tutguide/models/Event.dart';
 import 'package:tutguide/models/Museum.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -19,9 +20,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final Storage storage = Storage();
   static List<Museum> museumsList = [];
   late List<Museum> displayMuseums = [];
-  final Storage storage = Storage();
+  static List<Event> eventList = [];
 
   Future<void> getMuseums() async {
     final response =
@@ -46,10 +48,22 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> getEvents() async {
+    final response =
+        await http.get(Uri.parse('${Globals().uri}/event/getEvents'));
+    if (response.statusCode == 200) {
+      eventList = Event.fromJsonList(jsonDecode(response.body));
+      // return Event.fromJsonList(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to load Events");
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getMuseums();
+    getEvents();
   }
 
   @override
@@ -237,10 +251,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        EventCard('assets/images/img1.jpg', txt: 'event1'),
-                        EventCard('assets/images/img2.jpg', txt: 'event2'),
-                        EventCard('assets/images/img1.jpg', txt: 'event1'),
-                        EventCard('assets/images/img2.jpg', txt: 'event2'),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.horizontal,
+                          itemCount: eventList.length,
+                          itemBuilder: (context, index) {
+                            return FutureBuilder(
+                              future:
+                                  storage.downloadURL(eventList[index].image),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                        ConnectionState.done &&
+                                    snapshot.hasData) {
+                                  return EventCard(
+                                    img: snapshot.data!,
+                                    name: eventList[index].name,
+                                  );
+                                }
+                                return Container();
+                              },
+                            );
+                          },
+                        )
                       ],
                     ),
                   ),
