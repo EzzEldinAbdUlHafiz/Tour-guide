@@ -1,4 +1,4 @@
-import 'package:client_tablet/Screens/SecondScreen.dart';
+import 'package:client_tablet/Screens/VideoScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -54,7 +54,8 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Videoscreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const VideoScreen()),
                   );
                   // Navigate to the next screen or window
                 },
