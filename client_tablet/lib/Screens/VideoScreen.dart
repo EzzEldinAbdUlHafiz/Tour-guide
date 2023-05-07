@@ -1,9 +1,11 @@
 // ignore_for_file: library_private_types_in_public_api
-import 'package:client_tablet/Screens/HomeScreen.dart';
+import 'package:client_tablet/Globals.dart';
 import 'package:client_tablet/Screens/TransitionScreen.dart';
 import 'package:client_tablet/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
+import 'package:mqtt_client/mqtt_client.dart';
+import 'package:mqtt_client/mqtt_server_client.dart';
 
 class VideoScreen extends StatefulWidget {
   const VideoScreen({super.key});
@@ -16,6 +18,37 @@ class _VideoScreenState extends State<VideoScreen> {
   double h = 0, w = 0, topPadding = 0;
   late VideoPlayerController _controller;
   final Storage storage = Storage();
+  final client = MqttServerClient(Globals().mqtt, 'client1');
+
+  Future<void> mqttConnect() async {
+    client.keepAlivePeriod = 20;
+    await client.connect();
+    client.subscribe('my/topic', MqttQos.atLeastOnce);
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
+      final message = messages[0].payload as MqttPublishMessage;
+      final payload =
+          MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      debugPrint(
+          'Received message: $payload from topic: ${message.variableHeader!.topicName}');
+    });
+  }
+
+  void mqttPublish() {
+    final builder = MqttClientPayloadBuilder();
+    builder.addString('video Ended');
+    client.publishMessage('my/topic', MqttQos.atLeastOnce, builder.payload!);
+  }
+
+  void mqttSubscribe() {
+    client.subscribe('my/topic', MqttQos.atLeastOnce);
+    client.updates!.listen((List<MqttReceivedMessage<MqttMessage>> messages) {
+      final message = messages[0].payload as MqttPublishMessage;
+      final payload =
+          MqttPublishPayload.bytesToStringAsString(message.payload.message);
+      debugPrint(
+          'Received message: $payload from topic: ${message.variableHeader!.topicName}');
+    });
+  }
 
   void checkVideo() {
     if (_controller.value.position ==
@@ -27,6 +60,7 @@ class _VideoScreenState extends State<VideoScreen> {
     if (_controller.value.position == _controller.value.duration) {
       debugPrint(
           'video Ended.............................................................................');
+      mqttConnect();
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const TransitionScreen()),
