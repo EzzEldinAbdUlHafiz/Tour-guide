@@ -22,8 +22,8 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
   final List<String> imagesList = [];
 
   Future<Artifact> getArtifact() async {
-    final response =
-        await http.get(Uri.parse('${Globals().uri}/artifact/${widget.name!}'));
+    final response = await http
+        .get(Uri.parse('${Globals().uri}/artifact/name/${widget.name!}'));
     if (response.statusCode == 200) {
       return Artifact.fromJson(jsonDecode(response.body));
     } else {
@@ -62,11 +62,8 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
               FutureBuilder(
                 future: getArtifact(),
                 builder: (context, snapshot) {
-                  if (snapshot.data == null) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  } else {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
                     return SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -151,6 +148,10 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                           ),
                         ],
                       ),
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
                     );
                   }
                 },

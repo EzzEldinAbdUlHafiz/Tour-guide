@@ -49,8 +49,12 @@ router.get("/artifact/getArtifacts", (req, res) => {
   artifact.findAll(req, res);
 });
 
-router.get("/artifact/:name", (req, res) => {
+router.get("/artifact/name/:name", (req, res) => {
   artifact.findByName(req, res);
+});
+
+router.get("/artifact/rfid/:rfid", (req, res) => {
+  artifact.findByRFID(req, res);
 });
 
 router.post("/artifact/insertArtifact", (req, res) => {

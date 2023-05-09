@@ -24,6 +24,19 @@ const findByName = (req, res) => {
     });
 };
 
+const findByRFID = (req, res) => {
+  artifact
+    .findOne({
+      rfid: req.params.rfid,
+    })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const insertArtifact = (req, res) => {
   const data = new artifact(req.body);
   data
@@ -36,4 +49,4 @@ const insertArtifact = (req, res) => {
     });
 };
 
-module.exports = { findAll, insertArtifact, findByName };
+module.exports = { findAll, insertArtifact, findByName, findByRFID };

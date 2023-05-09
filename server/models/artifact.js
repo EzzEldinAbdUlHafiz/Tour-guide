@@ -18,8 +18,11 @@ const artifactSchema = mongoose.Schema({
     type: [String],
     required: true,
   },
-
   video: {
+    type: String,
+    required: true,
+  },
+  rfid: {
     type: String,
     required: true,
   },

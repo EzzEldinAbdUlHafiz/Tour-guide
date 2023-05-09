@@ -1,6 +1,5 @@
-import 'package:client_tablet/Globals.dart';
-import 'package:client_tablet/Screens/VideoScreen.dart';
 import 'package:client_tablet/Screens/welcomeScreen.dart';
+import 'package:client_tablet/mqtt.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
@@ -12,6 +11,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Mqtt mqtt = Mqtt();
+
+  @override
+  void initState() {
+    super.initState();
+    mqtt.mqttConnect();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -62,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                         builder: (context) => const WelcomeScreen()),
                   );
-                  // Navigate to the next screen or window
                 },
                 child: const Text('Start Journey'),
               ),

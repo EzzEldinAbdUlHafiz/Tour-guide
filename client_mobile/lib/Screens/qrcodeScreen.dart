@@ -24,8 +24,8 @@ class _QRCodeScreenState extends State<QRCodeScreen> {
   bool flag = false;
 
   Future<void> getArtifact() async {
-    final response =
-        await http.get(Uri.parse('${Globals().uri}/artifact/${result!.code}'));
+    final response = await http
+        .get(Uri.parse('${Globals().uri}/artifact/name/${result!.code}'));
     if (response.statusCode == 200) {
       flag = true;
     }

@@ -1,4 +1,4 @@
-import 'package:client_tablet/Screens/VideoScreen.dart';
+import 'package:client_tablet/Screens/components/video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:client_tablet/Screens/HomeScreen.dart';
 import 'package:flutter/services.dart';
