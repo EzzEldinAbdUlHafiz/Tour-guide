@@ -4,13 +4,14 @@ const router = require("./router");
 const cors = require("cors");
 const app = express();
 const PORT = 3000;
-
+const URI =
+  "mongodb+srv://ezzeldin:0ZkvXXBx8rz7EMlL@tutguide.l0g0msd.mongodb.net/TutGuide?retryWrites=true&w=majority";
 app.use(express.json());
 app.use(router);
 app.use(cors());
 
 mongoose
-  .connect("mongodb://0.0.0.0:27017/flutter_node")
+  .connect(URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
