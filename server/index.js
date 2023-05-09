@@ -1,17 +1,17 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const router = require("./router");
 const cors = require("cors");
 const app = express();
 const PORT = 3000;
-const URI =
-  "mongodb+srv://ezzeldin:0ZkvXXBx8rz7EMlL@tutguide.l0g0msd.mongodb.net/TutGuide?retryWrites=true&w=majority";
+
 app.use(express.json());
 app.use(router);
 app.use(cors());
 
 mongoose
-  .connect(URI)
+  .connect(process.env.URI)
   .then(() => {
     console.log("Connected to MongoDB");
     app.listen(PORT, () => {
