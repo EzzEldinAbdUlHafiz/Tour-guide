@@ -11,7 +11,8 @@ class Mqtt {
   Future<void> mqttConnect() async {
     client.keepAlivePeriod = 20;
     await client.connect();
-    debugPrint('${client.clientIdentifier} connected to MQTT server');
+    debugPrint(
+        '${client.clientIdentifier} connected to MQTT server *************************************************');
   }
 
   void mqttPublish() {
@@ -27,8 +28,8 @@ class Mqtt {
       final payload =
           MqttPublishPayload.bytesToStringAsString(message.payload.message);
       debugPrint(
-          'Received message: $payload from topic: ${message.variableHeader!.topicName}');
-      client.unsubscribe('my/topic');
+          'Received message: $payload from topic: ${message.variableHeader!.topicName} ##############################################');
+      // client.unsubscribe('my/topic');
     });
   }
 }

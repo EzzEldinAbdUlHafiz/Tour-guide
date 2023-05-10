@@ -15,6 +15,14 @@ class _TransitionScreenState extends State<TransitionScreen> {
   double h = 0, w = 0, topPadding = 0;
   final Storage storage = Storage();
 
+  Future<void> mqttCustomConnect() async {
+    Mqtt.client.keepAlivePeriod = 20;
+    await Mqtt.client.connect();
+    debugPrint(
+        '${Mqtt.client.clientIdentifier} connected to MQTT server *************************************************');
+    mqttCustomSubscribe();
+  }
+
   void mqttCustomSubscribe() {
     Mqtt.client.subscribe('my/topic', MqttQos.atLeastOnce);
     Mqtt.client.updates!
@@ -25,23 +33,23 @@ class _TransitionScreenState extends State<TransitionScreen> {
       debugPrint(
           'Received message: $payload from topic: ${message.variableHeader!.topicName}');
       Mqtt.client.unsubscribe('my/topic');
-      if (payload.isNotEmpty) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => VideoScreen(
-              rfid: payload,
-            ),
+      // if (payload.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => VideoScreen(
+            rfid: payload,
           ),
-        );
-      }
+        ),
+      );
+      // }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    mqttCustomSubscribe();
+    mqttCustomConnect();
   }
 
   @override

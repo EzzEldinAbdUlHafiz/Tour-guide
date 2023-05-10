@@ -39,9 +39,8 @@ class _VideoScreenState extends State<VideoScreen> {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData) {
                 return Video_player(videoUrl: snapshot.data!);
-              } else {
-                return const CircularProgressIndicator();
               }
+              return Container();
             }),
           );
         }

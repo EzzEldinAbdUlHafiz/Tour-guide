@@ -1,3 +1,4 @@
+import 'package:client_tablet/Screens/TransitionScreen.dart';
 import 'package:client_tablet/Screens/welcomeScreen.dart';
 import 'package:client_tablet/mqtt.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +12,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Mqtt mqtt = Mqtt();
-
-  @override
-  void initState() {
-    super.initState();
-    mqtt.mqttConnect();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
