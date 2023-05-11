@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:tutguide/Globals.dart';
+import 'package:tutguide/Screens/components/imageDialog.dart';
 import 'package:tutguide/Screens/components/video_player.dart';
 import 'package:tutguide/models/Artifact.dart';
 import 'package:tutguide/storage.dart';
@@ -19,7 +20,6 @@ class ArtifactScreen extends StatefulWidget {
 class _ArtifactScreenState extends State<ArtifactScreen> {
   double h = 0, w = 0, topPadding = 0;
   final Storage storage = Storage();
-  final List<String> imagesList = [];
 
   Future<Artifact> getArtifact() async {
     final response = await http
@@ -84,9 +84,19 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                                         if (snapshot.connectionState ==
                                                 ConnectionState.done &&
                                             snapshot.hasData) {
-                                          return Image.network(
-                                            snapshot.data!,
-                                            fit: BoxFit.cover,
+                                          return GestureDetector(
+                                            child: Image.network(
+                                              snapshot.data!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            onTap: () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (_) => ImageDialog(
+                                                  link: snapshot.data!,
+                                                ),
+                                              );
+                                            },
                                           );
                                         }
                                         return Container();
@@ -116,7 +126,7 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                             height: 5,
                           ),
                           SizedBox(
-                            height: 140,
+                            height: 200,
                             child: SingleChildScrollView(
                               scrollDirection: Axis.vertical,
                               child: Text(
@@ -124,6 +134,14 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                                 style: const TextStyle(fontSize: 17),
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          const Text(
+                            "Video:",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
                           ),
                           Padding(
                             padding: EdgeInsets.all(15),
@@ -133,8 +151,19 @@ class _ArtifactScreenState extends State<ArtifactScreen> {
                                 if (snapshot.connectionState ==
                                         ConnectionState.done &&
                                     snapshot.hasData) {
-                                  return Video_player(
-                                    videoUrl: snapshot.data!,
+                                  return GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => Video_player(
+                                          videoUrl: snapshot.data!,
+                                        ),
+                                      );
+                                    },
+                                    child: Icon(
+                                      Icons.play_circle_outline,
+                                      size: 100,
+                                    ),
                                   );
                                 } else {
                                   return Padding(

@@ -12,6 +12,7 @@ class Video_player extends StatefulWidget {
 }
 
 class _Video_playerState extends State<Video_player> {
+  double h = 0, w = 0, topPadding = 0;
   late VideoPlayerController _controller;
 
   @override
@@ -26,32 +27,60 @@ class _Video_playerState extends State<Video_player> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Center(
-          child: _controller.value.isInitialized
-              ? AspectRatio(
-                  aspectRatio: _controller.value.aspectRatio,
-                  child: VideoPlayer(_controller),
-                )
-              : Container(),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              setState(() {
-                _controller.value.isPlaying
-                    ? _controller.pause()
-                    : _controller.play();
-              });
-            },
-            child: Icon(
-              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+    topPadding = MediaQuery.of(context).padding.top;
+    h = MediaQuery.of(context).size.height - topPadding;
+    w = MediaQuery.of(context).size.width;
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Column(
+        children: [
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(3),
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white38,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.close,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Center(
+            child: _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  )
+                : const CircularProgressIndicator(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(
+                  () {
+                    _controller.value.isPlaying
+                        ? _controller.pause()
+                        : _controller.play();
+                  },
+                );
+              },
+              child: Icon(
+                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
