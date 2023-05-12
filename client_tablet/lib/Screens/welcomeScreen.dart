@@ -24,11 +24,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     if (_controller.value.position == _controller.value.duration) {
       debugPrint(
           'video Ended.............................................................................');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const TransitionScreen()),
-      );
+      videoEnded();
     }
+  }
+
+  void videoEnded() {
+    _controller.dispose();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const TransitionScreen()),
+    );
   }
 
   @override
@@ -50,7 +55,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
     w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
             if (_controller.value.isInitialized)
               SizedBox(
@@ -63,6 +68,17 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
               )
             else
               Container(),
+            ElevatedButton(
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(
+                  Colors.transparent,
+                ),
+              ),
+              onPressed: () {
+                videoEnded();
+              },
+              child: const Icon(Icons.skip_next),
+            ),
           ],
         ),
       ),

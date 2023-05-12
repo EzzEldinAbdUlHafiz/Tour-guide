@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, camel_case_types
 import 'package:client_tablet/Screens/TransitionScreen.dart';
+import 'package:client_tablet/mqtt.dart';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
@@ -24,13 +25,16 @@ class _Video_playerState extends State<Video_player> {
     if (_controller.value.position == _controller.value.duration) {
       debugPrint(
           'video Ended.............................................................................');
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const TransitionScreen(),
-        ),
-      );
+      videoEnded();
     }
+  }
+
+  void videoEnded() {
+    _controller.dispose();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const TransitionScreen()),
+    );
   }
 
   @override
@@ -51,7 +55,7 @@ class _Video_playerState extends State<Video_player> {
     w = MediaQuery.of(context).size.width;
     return Scaffold(
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
             if (_controller.value.isInitialized)
               SizedBox(
@@ -63,7 +67,18 @@ class _Video_playerState extends State<Video_player> {
                 ),
               )
             else
-              Container(),
+              const Center(child: CircularProgressIndicator()),
+            ElevatedButton(
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(
+                  Colors.transparent,
+                ),
+              ),
+              onPressed: () {
+                videoEnded();
+              },
+              child: const Icon(Icons.skip_next),
+            ),
           ],
         ),
       ),
@@ -76,16 +91,3 @@ class _Video_playerState extends State<Video_player> {
     _controller.dispose();
   }
 }
-
-// FloatingActionButton(
-//   onPressed: () {
-//     setState(() {
-//       _controller.value.isPlaying
-//           ? _controller.pause()
-//           : _controller.play();
-//     });
-//   },
-//   child: Icon(
-//     _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-//   ),
-// ),

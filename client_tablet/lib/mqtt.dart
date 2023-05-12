@@ -15,9 +15,9 @@ class Mqtt {
         '${client.clientIdentifier} connected to MQTT server *************************************************');
   }
 
-  void mqttPublish() {
+  void mqttPublish(String msg) {
     final builder = MqttClientPayloadBuilder();
-    builder.addString('video Ended');
+    builder.addString(msg);
     client.publishMessage('my/topic', MqttQos.atLeastOnce, builder.payload!);
   }
 

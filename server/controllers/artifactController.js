@@ -30,10 +30,15 @@ const findByRFID = (req, res) => {
       rfid: req.params.rfid,
     })
     .then((result) => {
-      res.send(result);
+      if (result != null) {
+        res.send(result);
+      } else {
+        res.status(404).send("Artifact not found");
+      }
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).send("Internal server error");
     });
 };
 
