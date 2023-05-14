@@ -43,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       displayMuseums = museumsList
           .where((element) =>
-              element.name.toLowerCase().contains(value.toLowerCase()))
+              element.name.toLowerCase().contains(value.toLowerCase()) ||
+              element.city.toLowerCase().contains(value.toLowerCase()))
           .toList();
     });
   }
