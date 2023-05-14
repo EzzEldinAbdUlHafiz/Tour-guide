@@ -26,21 +26,26 @@ class _ImageDialogState extends State<ImageDialog> {
             height: h - 100,
             fit: BoxFit.contain,
           ),
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(3),
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.white38,
-                borderRadius: BorderRadius.circular(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(3),
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white38,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(
+                    Icons.close,
+                  ),
+                ),
               ),
-              child: const Icon(
-                Icons.close,
-              ),
-            ),
+            ],
           ),
         ],
       ),
