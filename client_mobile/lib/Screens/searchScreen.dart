@@ -39,7 +39,8 @@ class _SearchScreenState extends State<SearchScreen> {
       () {
         displayArtifact = artifactList
             .where((element) =>
-                element.name.toLowerCase().contains(value.toLowerCase()))
+                element.name.toLowerCase().contains(value.toLowerCase()) ||
+                element.museum.toLowerCase().contains(value.toLowerCase()))
             .toList();
       },
     );
