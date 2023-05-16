@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                               child: const Text(
-                                'SCAN & 🥸🥸',
+                                'SCAN NOW',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
