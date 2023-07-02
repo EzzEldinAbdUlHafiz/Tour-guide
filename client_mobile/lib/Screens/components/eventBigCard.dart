@@ -23,29 +23,13 @@ class EventBigCard extends StatefulWidget {
 }
 
 class _EventBigCardState extends State<EventBigCard> {
+  double h = 0, w = 0, topPadding = 0;
   final Storage storage = Storage();
-  // Icon ic = Icon(Icons.favorite_border);
-  // bool flag = false;
-
-  // void iconChange() {
-  //   setState(
-  //     () {
-  //       if (flag) {
-  //         ic = Icon(Icons.favorite_border);
-  //         flag = false;
-  //       } else {
-  //         ic = Icon(
-  //           Icons.favorite,
-  //           color: Colors.red,
-  //         );
-  //         flag = true;
-  //       }
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
+    topPadding = MediaQuery.of(context).padding.top;
+    h = MediaQuery.of(context).size.height - topPadding;
+    w = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.only(top: 10.0),
       child: InkWell(
@@ -97,25 +81,19 @@ class _EventBigCardState extends State<EventBigCard> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 2, top: 10),
-                      //   child: Text(
-                      //     'PARTY',
-                      //     style: TextStyle(
-                      //       fontSize: 10,
-                      //       color: Colors.blueAccent,
-                      //     ),
-                      //   ),
-                      // ),
                       SizedBox(
                         height: 20,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(left: 2, top: 5),
-                        child: Text(
-                          widget.name,
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.bold),
+                        child: Container(
+                          width: w - 200,
+                          child: Text(
+                            widget.name,
+                            overflow: TextOverflow.clip,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
                       Padding(
@@ -130,21 +108,6 @@ class _EventBigCardState extends State<EventBigCard> {
                       ),
                     ],
                   ),
-                  // SizedBox(width: 120),
-                  // Expanded(
-                  //   child: Container(
-                  //     alignment: Alignment.centerRight,
-                  //     child: Padding(
-                  //       padding: EdgeInsets.all(6),
-                  //       child: InkWell(
-                  //         onTap: () {
-                  //           iconChange();
-                  //         },
-                  //         child: ic,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
                 ],
               ),
               SizedBox(height: 10),
