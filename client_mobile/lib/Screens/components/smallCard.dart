@@ -60,8 +60,12 @@ class SmallCard extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Container(
+              width: 125,
               padding: EdgeInsets.only(left: 5),
-              child: Text(txt),
+              child: Text(
+                txt,
+                overflow: TextOverflow.ellipsis,
+              ),
             )
           ],
         ),

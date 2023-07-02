@@ -103,118 +103,120 @@ class _EventScreenState extends State<EventScreen> {
                           ),
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(10, 15, 10, 15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text(
+                                        snapshot.data!.name,
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Center(
+                                    child: Container(
+                                      height: 70,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey.shade300),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              left: 20,
+                                              top: 8,
+                                              bottom: 8,
+                                            ),
+                                            width: w * 0.35,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              snapshot.data!.location,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 50,
+                                            padding: EdgeInsets.all(5),
+                                            child: VerticalDivider(
+                                                thickness: 0.5,
+                                                color: Colors.grey.shade700),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              top: 8,
+                                              bottom: 8,
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              snapshot.data!.eventDate,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 50,
+                                            padding: EdgeInsets.all(5),
+                                            child: VerticalDivider(
+                                                thickness: 0.5,
+                                                color: Colors.grey.shade700),
+                                          ),
+                                          Container(
+                                            margin: EdgeInsets.only(
+                                              right: 20,
+                                              top: 8,
+                                              bottom: 8,
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              snapshot.data!.eventTime,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      snapshot.data!.name,
+                                      'Description',
                                       style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 10),
-                                Center(
-                                  child: Container(
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey.shade300),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            left: 20,
-                                            top: 8,
-                                            bottom: 8,
-                                          ),
-                                          width: w * 0.35,
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            snapshot.data!.location,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 50,
-                                          padding: EdgeInsets.all(5),
-                                          child: VerticalDivider(
-                                              thickness: 0.5,
-                                              color: Colors.grey.shade700),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            top: 8,
-                                            bottom: 8,
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            snapshot.data!.eventDate,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          height: 50,
-                                          padding: EdgeInsets.all(5),
-                                          child: VerticalDivider(
-                                              thickness: 0.5,
-                                              color: Colors.grey.shade700),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            right: 20,
-                                            top: 8,
-                                            bottom: 8,
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            snapshot.data!.eventTime,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                  SizedBox(
+                                    height: h * 0.33,
+                                    child: SingleChildScrollView(
+                                      child: Text(
+                                        snapshot.data!.description,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Description',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: h * 0.33,
-                                  child: SingleChildScrollView(
-                                    child: Text(
-                                      snapshot.data!.description,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
