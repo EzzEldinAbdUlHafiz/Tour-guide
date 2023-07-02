@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:client_tablet/Screens/HomeScreen.dart';
 import 'package:client_tablet/Screens/videoScreen.dart';
 import 'package:http/http.dart' as http;
 import 'package:client_tablet/Globals.dart';
@@ -19,20 +20,30 @@ class _TransitionScreenState extends State<TransitionScreen> {
   Mqtt myClient = Mqtt();
 
   Future<void> getArtifact(String rfid) async {
-    final response =
-        await http.get(Uri.parse('${Globals().uri}/artifact/rfid/$rfid'));
-    if (response.statusCode == 200) {
-      // ignore: use_build_context_synchronously
+    if (rfid == "238c98e") {
+      mqttCustomConnectEnd();
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => VideoScreen(
-            videoUrl: Artifact.fromJson(jsonDecode(response.body)).video,
-          ),
+          builder: (context) => const HomeScreen(),
         ),
       );
     } else {
-      mqttCustomConnect();
+      final response =
+          await http.get(Uri.parse('${Globals().uri}/artifact/rfid/$rfid'));
+      if (response.statusCode == 200) {
+        // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoScreen(
+              videoUrl: Artifact.fromJson(jsonDecode(response.body)).video,
+            ),
+          ),
+        );
+      } else {
+        mqttCustomConnect();
+      }
     }
   }
 
@@ -43,6 +54,14 @@ class _TransitionScreenState extends State<TransitionScreen> {
         '${Mqtt.client.clientIdentifier} connected to MQTT server *************************************************');
     myClient.mqttPublish("move");
     mqttCustomSubscribe();
+  }
+
+  Future<void> mqttCustomConnectEnd() async {
+    Mqtt.client.keepAlivePeriod = 20;
+    await Mqtt.client.connect();
+    debugPrint(
+        '${Mqtt.client.clientIdentifier} connected to MQTT server *************************************************');
+    myClient.mqttPublish("end");
   }
 
   void mqttCustomSubscribe() {
